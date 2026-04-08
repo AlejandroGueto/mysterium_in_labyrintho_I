@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mysterium in Labyrintho - Versión Magistral 1º Bachillerato</title>
+    <!-- Tailwind CSS y Lucide Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,900&display=swap" rel="stylesheet">
@@ -76,7 +77,7 @@
         </div>
     </header>
 
-    <!-- PANTALLA DE BIENVENIDA -->
+    <!-- PANTALLA DE INICIO -->
     <div id="introStage" class="w-full max-w-3xl flex flex-col items-center text-center mt-12 space-y-8 fade-in">
         <h1 class="text-5xl md:text-7xl text-amber-400 tracking-widest uppercase text-shadow">Mysterium<br><span class="text-3xl text-sky-200">in Labyrintho</span></h1>
         
@@ -90,134 +91,126 @@
                         allowfullscreen>
                 </iframe>
             </div>
-            <p class="text-[10px] text-sky-500 mb-6 italic">¿El vídeo no carga? <a href="https://youtu.be/vSaoFDBCrhU" target="_blank" class="underline hover:text-amber-400">Ver en YouTube</a>.</p>
 
             <p class="text-lg leading-relaxed mb-8 text-sky-100 text-justify">
-                Bienvenidos, jóvenes helenistas. El Minotauro acecha en las profundidades del palacio de Cnosos. Vuestra misión es descifrar los tres fragmentos del papiro de Dédalo. Para lograrlo, deberéis demostrar un dominio absoluto de la <strong>morfología nominal (las 3 declinaciones)</strong> y la <strong>flexión verbal (imperfectos y aoristos activos/medios)</strong>. 
+                Bienvenidos, jóvenes atenienses. El Minotauro acecha. Vuestra única esperanza para guiar a Teseo fuera del laberinto es descifrar los papiros de Dédalo. Debéis dominar las <strong>tres declinaciones</strong> y los tiempos de pasado. 
                 <br><br>
-                El Oráculo de Delfos os asistirá, pero solo si sabéis qué preguntarle. ¡El hilo de Ariadna es vuestro conocimiento!
+                El <strong>Oráculo de Delfos</strong> os revelará todos los secretos gramaticales: análisis palabra por palabra, tablas de flexión (N-V-A-G-D) y conjugaciones completas.
             </p>
             <div class="mb-6">
-                <label class="block text-amber-500 font-cinzel mb-2 text-sm uppercase">Nombre de la expedición:</label>
-                <input type="text" id="teamName" class="w-full bg-slate-950 border-2 border-sky-600 text-white p-4 rounded font-cinzel text-center text-xl focus:border-amber-400 outline-none transition-all shadow-inner" placeholder="Ej: Los Argonautas de Atenas">
+                <input type="text" id="teamName" class="w-full bg-slate-950 border-2 border-sky-600 text-white p-4 rounded font-cinzel text-center text-xl focus:border-amber-400 outline-none transition-all shadow-inner" placeholder="Nombre de los Tributos...">
             </div>
-            <button onclick="startGame()" class="px-12 py-5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-cinzel font-black text-2xl rounded transition transform hover:scale-105 shadow-[0_0_20px_rgba(217,119,6,0.4)] w-full md:w-auto uppercase tracking-tighter">
+            <button onclick="startGame()" class="px-12 py-5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-cinzel font-black text-2xl rounded transition transform hover:scale-105 shadow-xl uppercase tracking-widest">
                 Entrar al Laberinto
             </button>
         </div>
     </div>
 
-    <!-- ZONA DE JUEGO -->
+    <!-- ÁREA DE TRABAJO -->
     <div id="gameStage" class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 hidden-stage fade-in">
         
-        <!-- COLUMNA IZQUIERDA: LOS TEXTOS -->
         <div class="flex flex-col gap-6">
             <div id="papiro1-container" class="pergamino p-8 rounded-xl shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-2 opacity-10 font-cinzel text-8xl">I</div>
-                <h2 class="text-xl font-cinzel text-center border-b-2 border-amber-900/20 pb-2 mb-6 font-bold text-amber-950 uppercase tracking-widest">El Sacrificio</h2>
+                <h2 class="text-xl font-cinzel text-center border-b-2 border-amber-900/20 pb-2 mb-6 font-bold text-amber-950 uppercase tracking-widest">Papiro I: El Sacrificio</h2>
                 <div id="greek-container-1" class="text-xl leading-relaxed text-justify greek-display text-slate-900 font-medium"></div>
             </div>
 
             <div id="papiro2-container" class="pergamino p-8 rounded-xl shadow-2xl relative overflow-hidden hidden-stage fade-in">
-                <div class="absolute top-0 right-0 p-2 opacity-10 font-cinzel text-8xl">II</div>
-                <h2 class="text-xl font-cinzel text-center border-b-2 border-amber-900/20 pb-2 mb-6 font-bold text-amber-950 uppercase tracking-widest">El Encuentro</h2>
+                <h2 class="text-xl font-cinzel text-center border-b-2 border-amber-900/20 pb-2 mb-6 font-bold text-amber-950 uppercase tracking-widest">Papiro II: El Laberinto</h2>
                 <div id="greek-container-2" class="text-xl leading-relaxed text-justify greek-display text-slate-900 font-medium"></div>
             </div>
 
             <div id="papiro3-container" class="pergamino p-8 rounded-xl shadow-2xl relative overflow-hidden hidden-stage fade-in">
-                <div class="absolute top-0 right-0 p-2 opacity-10 font-cinzel text-8xl">III</div>
-                <h2 class="text-xl font-cinzel text-center border-b-2 border-amber-900/20 pb-2 mb-6 font-bold text-amber-950 uppercase tracking-widest">La Huida de Naxos</h2>
+                <h2 class="text-xl font-cinzel text-center border-b-2 border-amber-900/20 pb-2 mb-6 font-bold text-amber-950 uppercase tracking-widest">Papiro III: Naxos</h2>
                 <div id="greek-container-3" class="text-xl leading-relaxed text-justify greek-display text-slate-900 font-medium"></div>
             </div>
 
             <div class="bg-slate-950/50 p-5 rounded-lg border border-sky-800 text-sky-300 text-sm italic shadow-lg">
-                <p class="flex items-center gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-amber-400"></i> Haz clic en las palabras griegas para abrir el Oráculo y ver su análisis completo y tablas de flexión.</p>
+                <p class="flex items-center gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-amber-400"></i> El Oráculo lo sabe todo. Haz clic en cualquier palabra para consultar su análisis exhaustivo.</p>
             </div>
         </div>
 
-        <!-- COLUMNA DERECHA: LOS DESAFÍOS -->
         <div class="flex flex-col space-y-6">
             
             <!-- PRUEBA 1 -->
-            <div id="prueba1" class="bg-slate-900 border-l-8 border-cyan-600 p-8 rounded shadow-2xl shadow-cyan-900/20 transition-all">
-                <h3 class="text-2xl text-cyan-400 font-cinzel mb-6 flex items-center gap-3"><i data-lucide="binary"></i> I. El Hilo de la 3ª Declinación</h3>
+            <div id="prueba1" class="bg-slate-900 border-l-8 border-cyan-600 p-8 rounded shadow-2xl transition-all">
+                <h3 class="text-2xl text-cyan-400 font-cinzel mb-6 uppercase">Prueba I: Identificación Nominal</h3>
                 <div class="space-y-5">
                     <div class="flex flex-col gap-2">
                         <label class="text-sm text-sky-200 font-bold">1. Verbo en Aoristo Sigmático (3ª pl) del Papiro I ("Navegaron"):</label>
-                        <input type="text" id="p1-q1" class="input-griego border-b-sky-700" placeholder="Escribe en griego...">
+                        <input type="text" id="p1-q1" class="input-griego" placeholder="...">
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="text-sm text-sky-200 font-bold">2. Sustantivo 3ª dec. (tema en dental), acusativo sing. ("Al monstruo"):</label>
-                        <input type="text" id="p1-q2" class="input-griego border-b-sky-700" placeholder="Escribe en griego...">
+                        <label class="text-sm text-sky-200 font-bold">2. Sustantivo 3ª dec. (dental), acusativo sing. ("Al monstruo"):</label>
+                        <input type="text" id="p1-q2" class="input-griego" placeholder="...">
                     </div>
                 </div>
-                <button onclick="checkPrueba1()" class="mt-8 w-full py-4 bg-cyan-700 hover:bg-cyan-600 text-white font-black rounded uppercase tracking-widest transition-all">Revelar Papiro II</button>
+                <button onclick="checkPrueba1()" class="mt-8 w-full py-4 bg-cyan-700 hover:bg-cyan-600 text-white font-black rounded uppercase transition-all">Desbloquear Papiro II</button>
             </div>
 
             <!-- PRUEBA 2 -->
             <div id="prueba2" class="bg-slate-900 border-l-8 border-emerald-600 p-8 rounded shadow-2xl opacity-40 pointer-events-none transition-all">
-                <h3 class="text-2xl text-emerald-400 font-cinzel mb-6 flex items-center gap-3"><i data-lucide="languages"></i> II. La Sintaxis del Pasado</h3>
+                <h3 class="text-2xl text-emerald-400 font-cinzel mb-6 uppercase">Prueba II: Sintaxis del Pasado</h3>
                 <div class="space-y-6">
                     <div class="bg-slate-950 p-4 rounded border border-emerald-900/50">
                         <p class="greek-display text-amber-200 text-xl mb-3">"ὁ Θησεὺς τῆς κεφαλῆς ἐλάβετο"</p>
-                        <select id="p2-q1" class="bg-slate-900 text-white text-sm w-full p-3 border border-sky-800 rounded focus:ring-2 ring-emerald-500 outline-none">
-                            <option value="">¿Cuál es el análisis correcto?</option>
+                        <select id="p2-q1" class="bg-slate-900 text-white text-sm w-full p-3 border border-sky-800 rounded">
+                            <option value="">¿Análisis correcto?</option>
                             <option value="1">Teseo tomó la cabeza (Aoristo Activo).</option>
-                            <option value="2">Teseo se agarró a la cabeza (Aoristo Medio + C. Régimen en Genitivo).</option>
-                            <option value="3">Teseo tiene cabeza (Presente de Indicativo).</option>
+                            <option value="2">Teseo se agarró a la cabeza (Aoristo Medio + C. Régimen).</option>
+                            <option value="3">Teseo miraba la cabeza (Imperfecto).</option>
                         </select>
                     </div>
                     <div class="bg-slate-950 p-4 rounded border border-emerald-900/50">
-                        <p class="greek-display text-amber-200 text-xl mb-3">"οἱ δοῦλοι ἤγαγον τοὺς Ἀθηναίους"</p>
-                        <select id="p2-q2" class="bg-slate-900 text-white text-sm w-full p-3 border border-sky-800 rounded focus:ring-2 ring-emerald-500 outline-none">
-                            <option value="">¿Qué tiempo verbal se utiliza?</option>
-                            <option value="1">Aoristo Radical (2º o Fuerte) de ἄγω.</option>
-                            <option value="2">Pretérito Imperfecto con aumento silábico.</option>
-                            <option value="3">Presente de Indicativo contracto.</option>
+                        <p class="greek-display text-amber-200 text-xl mb-3">"ἤρα αὐτοῦ"</p>
+                        <select id="p2-q2" class="bg-slate-900 text-white text-sm w-full p-3 border border-sky-800 rounded">
+                            <option value="">¿Qué tiempo verbal es ἤρα?</option>
+                            <option value="1">Aoristo de ἐράω.</option>
+                            <option value="2">Pretérito Imperfecto (contracto de ἐράω).</option>
+                            <option value="3">Presente de Indicativo.</option>
                         </select>
                     </div>
                 </div>
-                <button onclick="checkPrueba2()" class="mt-8 w-full py-4 bg-emerald-700 hover:bg-emerald-600 text-white font-black rounded uppercase tracking-widest transition-all">Revelar Papiro III</button>
+                <button onclick="checkPrueba2()" class="mt-8 w-full py-4 bg-emerald-700 hover:bg-emerald-600 text-white font-black rounded uppercase transition-all">Desbloquear Papiro III</button>
             </div>
 
-            <!-- PRUEBA 3 (Añadida - Traducción Directa) -->
+            <!-- PRUEBA 3 -->
             <div id="prueba3" class="bg-slate-900 border-l-8 border-amber-600 p-8 rounded shadow-2xl opacity-40 pointer-events-none transition-all">
-                <h3 class="text-2xl text-amber-500 font-cinzel mb-6 flex items-center gap-3"><i data-lucide="pen-tool"></i> III. La Palabra Perdida</h3>
-                <p class="text-sm text-sky-200 mb-6 italic">Completa la traducción del fragmento final del Papiro III:</p>
+                <h3 class="text-2xl text-amber-500 font-cinzel mb-6 uppercase">Prueba III: El Mandato de la Hija de Minos</h3>
+                <p class="text-sm text-sky-200 mb-6 italic">Ariadna entrega el hilo y ordena. Traduce la frase:</p>
                 <div class="bg-slate-950 p-5 rounded font-serif text-lg leading-relaxed text-sky-100 border border-amber-900/30">
-                    "Ariadna entonces abandonó el sueño, y por tanto temía muchísimo y <span class="border-b-2 border-amber-500 px-2 italic text-amber-400">gritaba</span>: —¡Oh Teseo!, ¿acaso me <input type="text" id="p3-q1" class="bg-transparent border-b-2 border-amber-500 text-amber-400 outline-none text-center w-32" placeholder="verbo...">?"
+                    "Ariadna dijo: —No temas (μὴ φοβοῦ), sino <input type="text" id="p3-q1" class="bg-transparent border-b-2 border-amber-500 text-amber-400 outline-none text-center w-28" placeholder="..."> al monstruo."
                 </div>
-                <button onclick="checkPrueba3()" class="mt-8 w-full py-4 bg-amber-700 hover:bg-amber-600 text-white font-black rounded uppercase tracking-widest transition-all">Siguiente: El Timón</button>
+                <button onclick="checkPrueba3()" class="mt-8 w-full py-4 bg-amber-700 hover:bg-amber-600 text-white font-black rounded uppercase transition-all">Siguiente: El Timón</button>
             </div>
 
-            <!-- PRUEBA 4 (LOCK FINAL) -->
+            <!-- PRUEBA 4 -->
             <div id="prueba4" class="bg-slate-900 border-l-8 border-red-600 p-8 rounded shadow-2xl opacity-40 pointer-events-none transition-all">
-                <h3 class="text-2xl text-red-500 font-cinzel mb-6 flex items-center gap-3"><i data-lucide="key"></i> Final. El Astrolabio de Dédalo</h3>
-                <p class="text-sm text-sky-200 mb-6">Analiza todo el <strong>Papiro III</strong>. El código de 5 dígitos desbloqueará el timón del barco:</p>
+                <h3 class="text-2xl text-red-500 font-cinzel mb-6 uppercase">Final: El Astrolabio del Timonel</h3>
                 <div class="grid grid-cols-5 gap-3">
                     <div class="flex flex-col items-center">
-                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black">IMPERFECTOS<br>(Pap. III)</span>
+                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black leading-tight">IMPERF.<br>(Pap. III)</span>
                         <input type="number" id="l1" class="candado-input">
                     </div>
                     <div class="flex flex-col items-center">
-                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black">DECLINACIÓN<br>νυκτὶ</span>
+                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black leading-tight">DECLIN.<br>νυκτὶ</span>
                         <input type="number" id="l2" class="candado-input">
                     </div>
                     <div class="flex flex-col items-center">
-                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black">CASO<br>νήσῳ*</span>
+                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black leading-tight">CASO<br>νήσῳ*</span>
                         <input type="number" id="l3" class="candado-input">
                     </div>
                     <div class="flex flex-col items-center">
-                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black">AORISTOS<br>ACTIVOS</span>
+                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black leading-tight">AORISTOS<br>ACTIVOS</span>
                         <input type="number" id="l4" class="candado-input">
                     </div>
                     <div class="flex flex-col items-center">
-                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black">PERSONA<br>κατέλιπες</span>
+                        <span class="text-[10px] text-sky-500 mb-1 text-center font-black leading-tight">PERSONA<br>κατέλιπες</span>
                         <input type="number" id="l5" class="candado-input">
                     </div>
                 </div>
                 <p class="text-[9px] text-sky-600 mt-4">* 1=Nom, 2=Voc, 3=Acc, 4=Gen, 5=Dat.</p>
-                <button onclick="checkPrueba4()" class="mt-8 w-full py-5 bg-gradient-to-r from-red-800 to-amber-700 text-white font-black text-xl rounded uppercase tracking-widest shadow-lg shadow-red-900/50 hover:from-red-700 hover:to-amber-600">Girar Timón y Zarpar</button>
+                <button onclick="checkPrueba4()" class="mt-8 w-full py-5 bg-gradient-to-r from-red-800 to-amber-700 text-white font-black text-xl rounded uppercase tracking-widest shadow-xl">Girar Timón y Zarpar</button>
             </div>
         </div>
     </div>
@@ -225,25 +218,19 @@
     <!-- ORÁCULO DE DELFOS (DRAWER) -->
     <div id="oracle-drawer" class="fixed inset-y-0 right-0 w-full md:w-[650px] bg-slate-950 translate-x-full drawer shadow-2xl overflow-y-auto p-10 border-l border-amber-900/50">
         <div class="flex justify-between items-center mb-10 border-b border-sky-900 pb-6">
-            <div class="flex items-center gap-4">
-                <i data-lucide="scroll-text" class="w-10 h-10 text-amber-500"></i>
-                <div>
-                    <h3 class="font-cinzel text-amber-500 text-2xl tracking-widest uppercase">Oráculo de Delfos</h3>
-                    <p class="text-[10px] text-sky-500 uppercase tracking-widest">Saber divino para mortales</p>
-                </div>
-            </div>
+            <h3 class="font-cinzel text-amber-500 text-3xl tracking-widest uppercase">Oráculo de Delfos</h3>
             <button onclick="closeOracle()" class="text-sky-400 hover:text-white transition-transform hover:rotate-90"><i data-lucide="x-circle" class="w-10 h-10"></i></button>
         </div>
         <div id="oracle-content" class="space-y-10"></div>
     </div>
 
     <!-- PANTALLA FINAL -->
-    <div id="endStage" class="w-full max-w-2xl text-center hidden-stage fade-in mt-20 p-12 bg-slate-900 rounded-2xl border-2 border-amber-500 shadow-[0_0_50px_rgba(217,119,6,0.3)]">
+    <div id="endStage" class="w-full max-w-2xl text-center hidden-stage fade-in mt-20 p-12 bg-slate-900 rounded-2xl border-2 border-amber-500 shadow-2xl">
         <div id="endEmoji" class="text-9xl mb-8">🏛️</div>
-        <h2 id="endTitle" class="text-5xl font-cinzel text-amber-400 mb-6 uppercase tracking-tighter"></h2>
+        <h2 id="endTitle" class="text-5xl font-cinzel text-amber-400 mb-6 uppercase"></h2>
         <p id="endText" class="text-2xl text-sky-100 mb-10 leading-relaxed font-serif"></p>
-        <div id="endStats" class="grid grid-cols-2 gap-6 mb-10 bg-slate-950 p-8 rounded-xl border border-sky-800 shadow-inner"></div>
-        <button onclick="location.reload()" class="px-12 py-4 bg-amber-600 text-slate-950 font-black text-xl rounded-lg uppercase hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/50">Nueva Gesta</button>
+        <div id="endStats" class="grid grid-cols-2 gap-6 mb-10 bg-slate-950 p-8 rounded-xl border border-sky-800"></div>
+        <button onclick="location.reload()" class="px-12 py-4 bg-amber-600 text-slate-950 font-black text-xl rounded uppercase">Reiniciar partida</button>
     </div>
 
     <script>
@@ -252,131 +239,128 @@
         let mistakes = 0;
         let activeTeam = "";
 
-        // --- TEXTOS ---
         const texts = [
-            "ὁ μὲν Μίνως ἐν τῇ Κρήτῃ ἐβασίλευε καὶ τοὺς Ἀθηναίους ἠνάγκαζε παρέχειν ἑπτὰ νεανίας καὶ ἑπτὰ παρθένους τῷ Μινωταύρῳ ἐσθίειν. ὁ δὲ Θησεὺς τοὺς ἑταίρους ᾤκτιρε καὶ ἐβούλετο σῴζειν. εἰς οὖν τὴν ναῦν εἰσέβησαν καὶ ἔπλευσαν πρὸς τὴν Κρήτην. ἐπεὶ δὲ ἀφίκοντο, ἡ Ἀριάδνη εἶδε τὸν Θησέα καὶ ἤρα αὐτοῦ. ἐν δὲ τῇ νυκτὶ τὸ ξίφος καὶ τὸ λίνον παρέσχε καὶ εἶπε· μὴ φοβοῦ, ἀλλὰ ἀπόκτεινε τὸ τέρας.",
-            "ἐπεὶ δὲ ἡ ἡμέρα ἐγένετο, οἱ δοῦλοι ἤγαγον τοὺς Ἀθηναίους εἰς τὸν λαβύρινθον καὶ τὰς πύλας ἔκλεισαν. ὁ δὲ Θησεὺς οὐκ ἐφοβεῖτο. ἐνταῦθα δὴ τὸ θηρίον δεινῶς ἐβρυχᾶτο καὶ ἐπὶ τὸν ἥρωα ὡρμήσατο. ἀλλὰ ὁ Θησεὺς τῆς κεφαλῆς ἐλάβετο καὶ τὸ στῆθος ἔτυψε. οὕτως ἀπέκτεινε τὸν Μινώταυρον. ἔπειτα δὲ τὸ λίνον ἔλαβε καὶ τοῖς ἑταίροις ἡγήσατο πρὸς τὰς πύλας, καὶ ἐξῆλθον.",
-            "πρῶτον μὲν οὖν πρὸς Νάξον ἔπλευσαν καὶ ἀνεπαύσαντο. ἐν δὲ τῇ νυκτὶ οἱ μὲν ἄλλοι ἐκάθευδον, ὁ δὲ Θησεὺς ἤγειρε τοὺς ἑταίρους καὶ εἶπε· καιρός ἐστιν ἀποπλεῖν. ταχέως οὖν ἔλυσαν τὰ πείσματα καὶ τὴν Ἀριάδνην ἔλιπον ἐν τῇ νήσῳ. ἐπεὶ δὲ ἡ ἡμέρα ἐγένετο, ἡ δὲ Ἀριάδνη τότε τὸν ὕπνον ἔλιπε, καὶ μάλιστα οὖv ἐφοβεῖτο καὶ ἐβόα· ὦ Θησεῦ, ἆρά με κατέλιπες;"
+            "ὁ μὲν Μίνως ἐν τῇ Κρήτῃ ἐβασíλευε καὶ τοὺς Ἀθηναíους ἠνάγκαζε παρέχειν ἑπτὰ νεανíας καὶ ἑπτὰ παρθένους τῷ Μινωταύρῳ ἐσθíειν. ὁ δὲ Θησεὺς τοὺς ἑταíρους ᾤκτιρε καὶ ἐβούλεto σῴζειν. εἰς οὖν τὴν ναῦν εἰσέβησαν καὶ ἔπλευσαν πρὸς τὴν Κρήτην. ἐπεὶ δὲ ἀφíκοντο, ἡ Ἀριάδνη εἶδε τὸν Θησέα καὶ ἤρα αὐτοῦ. ἐν δὲ τῇ νυκτì τὸ ξíφος καὶ τὸ λíνον παρέσχε καὶ εἶπε· μὴ φοβοῦ, ἀλλὰ ἀπόκτεινε τὸ τέρας.",
+            "ἐπεὶ δὲ ἡ ἡμέρα ἐγένεto, οἱ δοῦλοι ἤγαγον τοὺς Ἀθηναíους εἰς τὸν λαβύρινθον καὶ τὰς πύλας ἔκλεισαν. ὁ δὲ Θησεὺς οὐκ ἐφοβεῖto. ἐνταῦθα δὴ τὸ θηρíον δεινῶς ἐβρυχᾶto καὶ ἐπὶ τὸν ἥρωα ὡρμήσαto. ἀλλὰ ὁ Θησεὺς τῆς κεφαλῆς ἐλάβεto καὶ τὸ στῆθος ἔτυψε. οὕτως ἀπέκτεινε τὸν Μινώταυρον. ἔπειta δὲ τὸ λίνον ἔλαβε καὶ τοῖς ἑταίροις ἡγήσαto πρὸς τὰς πύλας, καὶ ἐξῆλθον.",
+            "πρῶτον μὲν οὖν πρὸς Νάξον ἔπλευσαν καὶ ἀνεπαύσανto. ἐν δὲ τῇ νυκτì οἱ μὲν ἄλλοι ἐκάθευδον, ὁ δὲ Θησεὺς ἤγειρε τοὺς ἑταίρους καὶ εἶπε· καιρός ἐστιν ἀποπλεῖν. ταχέως οὖν ἔλυσαν τὰ πείσματα καὶ τὴν Ἀριάδνην ἔλιπον ἐν τῇ νήσῳ. ἐπεὶ δὲ ἡ ἡμέρα ἐγένεto, ἡ δὲ Ἀριάδνη τότε τὸν ὕπνον ἔλιπε, καὶ μάλιστα οὖv ἐφοβεῖto καὶ ἐβóα· ὦ Θησεῦ, ἆρά με κατέλιπες;"
         ];
 
-        // --- DICCIONARIO MEGA-COMPLETO ---
-        // Nouns: N, V, A, G, D
+        // DICCIONARIO UNIVERSAL (TODAS LAS PALABRAS ANALIZADAS)
         const dict = {
-            'μινωσ': { type: 'noun', e: 'Μίνως, -ωος (ὁ)', d: 'Minos (Rey de Creta).', m: 'Sustantivo. 3ª Declinación (Tema en silbante/ática). Masculino.', p: { s: ['Μίνως', 'Μίνως', 'Μίνωα', 'Μίνωος', 'Μίνωι'], p: ['-', '-', '-', '-', '-'] }},
-            'κρητη': { type: 'noun', e: 'Κρήτη, -ης (ἡ)', d: 'Creta.', m: 'Sustantivo. 1ª Decl. (Femenino en eta).', s: 'Dativo Singular (Rige prep. ἐν). CC Lugar.', p: { s: ['Κρήτη', 'Κρήτη', 'Κρήτην', 'Κρήτης', 'Κρήτῃ'], p: ['-', '-', '-', '-', '-'] }},
-            'κρητην': { type: 'noun', e: 'Κρήτη, -ης (ἡ)', d: 'Creta.', m: '1ª Decl. (Femenino en eta).', s: 'Acusativo Sing. (Rige πρὸς). CC Dirección.', p: { s: ['Κρήτη', 'Κρήτη', 'Κρήτην', 'Κρήτης', 'Κρήτῃ'], p: ['-', '-', '-', '-', '-'] }},
-            'αθηναιουσ': { type: 'noun', e: 'Ἀθηναῖος, -α, -ον', d: 'Ateniense.', m: 'Adjetivo (sustantivado). 2ª Decl. Masculino.', s: 'Acusativo Plural. C. Directo.', p: { s: ['Ἀθηναῖος', 'Ἀθηναῖε', 'Ἀθηναῖον', 'Ἀθηναίου', 'Ἀθηναίῳ'], p: ['Ἀθηναῖοι', 'Ἀθηναῖοι', 'Ἀθηναίους', 'Ἀθηναίων', 'Ἀθηναίοις'] }},
-            'νεανιασ': { type: 'noun', e: 'νεανίας, -ου (ὁ)', d: 'Joven / Muchacho.', m: 'Sustantivo. 1ª Decl. Masculina (en -ας).', s: 'Acusativo Plural. C. Directo.', p: { s: ['νεανίας', 'νεανία', 'νεανίαν', 'νεανίου', 'νεανίᾳ'], p: ['νεανίαι', 'νεανίαι', 'νεανίας', 'νεανιῶν', 'νεανίαις'] }},
-            'παρθενουσ': { type: 'noun', e: 'παρθένος, -ου (ἡ)', d: 'Doncella / Virgen.', m: 'Sustantivo. 2ª Decl. Femenina.', s: 'Acusativo Plural. C. Directo.', p: { s: ['παρθένος', 'παρθένε', 'παρθένον', 'παρθένου', 'παρθένῳ'], p: ['παρθένοι', 'παρθένοι', 'παρθένους', 'παρθένων', 'παρθέnoις'] }},
-            'μινωταυρω': { type: 'noun', e: 'Μινώταυρος, -ου (ὁ)', d: 'Minotauro.', m: 'Sustantivo. 2ª Decl. Masculina.', s: 'Dativo Singular. C. Indirecto.', p: { s: ['Μινώταυρος', 'Μινώταυρε', 'Μινώταυρον', 'Μινωταύρου', 'Μινωταύρῳ'], p: ['Μινώταυροι', 'Μινώταυροι', 'Μινωταύρους', 'Μινωταύρων', 'Μινωtaύροις'] }},
-            'μινωtaυρον': { type: 'noun', e: 'Μινώταυρος, -ου (ὁ)', d: 'Minotauro.', m: 'Sustantivo. 2ª Decl. Masculina.', s: 'Acusativo Singular. C. Directo.', p: { s: ['Μινώταυρος', 'Μινώταυρε', 'Μινώταυρον', 'Μινωταύρου', 'Μινωtaύρῳ'], p: ['Μινώταυροι', 'Μινώταυροι', 'Μινωταύρους', 'Μινωταύρων', 'Μινωtaύροις'] }},
-            'θησευσ': { type: 'noun', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo (Héroe ateniense).', m: 'Sustantivo. 3ª Decl. (Tema en diptongo -ευ). Masculino.', s: 'Nominativo Singular. Sujeto.', p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησέως', 'Θησεῖ'], p: ['Θησεῖς', 'Θησεῖς', 'Θησέας', 'Θησέων', 'Θησεῦσι(ν)'] }},
-            'θησεα': { type: 'noun', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo.', m: '3ª Decl. (Tema en diptongo -ευ).', s: 'Acusativo Singular. C. Directo.', p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησέως', 'Θησεῖ'], p: ['Θησεῖς', 'Θησεῖς', 'Θησέας', 'Θησέων', 'Θησεῦσι(ν)'] }},
-            'θησευ': { type: 'noun', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo.', m: '3ª Decl. (Tema en diptongo -ευ).', s: 'Vocativo Singular. Función Apelativa.', p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησέως', 'Θησεῖ'], p: ['Θησεῖς', 'Θησεῖς', 'Θησέας', 'Θησέων', 'Θησεῦσι(ν)'] }},
-            'εταιρουσ': { type: 'noun', e: 'ἑταῖρος, -ου (ὁ)', d: 'Compañero / Camarada.', m: 'Sustantivo. 2ª Decl. Masculina.', s: 'Acusativo Plural. C. Directo.', p: { s: ['ἑταῖρος', 'ἑταῖρε', 'ἑταῖρον', 'ἑταίρου', 'ἑταίρῳ'], p: ['ἑταῖροι', 'ἑταῖροι', 'ἑταίρους', 'ἑταίρων', 'ἑταίroις'] }},
-            'εταιροισ': { type: 'noun', e: 'ἑταῖρος, -ου (ὁ)', d: 'Compañero.', m: '2ª Decl. Masculina.', s: 'Dativo Plural. C. Indirecto (Rige ἡγήσατο).', p: { s: ['ἑταῖρος', 'ἑταῖρε', 'ἑταῖρον', 'ἑταίρου', 'ἑταίρῳ'], p: ['ἑταῖροι', 'ἑταῖροι', 'ἑταίρους', 'ἑταίρων', 'ἑταίροις'] }},
-            'ναυν': { type: 'noun', e: 'ναῦς, νεώς (ἡ)', d: 'Nave / Barco.', m: 'Sustantivo. 3ª Decl. (Irregular, tema en diptongo). Femenino.', s: 'Acusativo Sing. (Rige εἰς). CC Lugar.', p: { s: ['ναῦς', 'ναῦ', 'ναῦν', 'νεώς', 'νηί'], p: ['νῆες', 'νῆες', 'ναῦς', 'νεῶν', 'ναυσί(ν)'] }},
-            'αριαδνη': { type: 'noun', e: 'Ἀριάδνη, -ης (ἡ)', d: 'Ariadna.', m: 'Sustantivo. 1ª Decl. (Femenino en eta).', s: 'Nominativo Singular. Sujeto.', p: { s: ['Ἀριάδνη', 'Ἀριάδνη', 'Ἀριάδνην', 'Ἀριάδνης', 'Ἀριάδνῃ'], p: ['-', '-', '-', '-', '-'] }},
-            'αριαδνην': { type: 'noun', e: 'Ἀριάδνη, -ης (ἡ)', d: 'Ariadna.', m: '1ª Decl. (Femenino en eta).', s: 'Acusativo Singular. C. Directo.', p: { s: ['Ἀριάδνη', 'Ἀριάδνη', 'Ἀριάδνην', 'Ἀριάδνης', 'Ἀριάδνῃ'], p: ['-', '-', '-', '-', '-'] }},
-            'νυκτι': { type: 'noun', e: 'νύξ, νυκτός (ἡ)', d: 'Noche.', m: 'Sustantivo. 3ª Decl. (Tema en oclusiva velar κ/γ/χ). Femenino.', s: 'Dativo Singular. C.C. Tiempo.', p: { s: ['νύξ', 'νύξ', 'νύκτα', 'νυκτός', 'νυκτί'], p: ['νύκtes', 'νύκτες', 'νύκτας', 'νυκτῶν', 'νuξί(ν)'] }},
-            'ξιφοσ': { type: 'noun', e: 'ξίφος, -ους (τό)', d: 'Espada.', m: 'Sustantivo. 3ª Decl. (Tema en silbante neutro).', s: 'Acusativo Singular (Neutra: Nom=Voc=Acc).', p: { s: ['ξίφος', 'ξíφος', 'ξίφος', 'ξίφους', 'ξίφει'], p: ['ξίφη', 'ξíφη', 'ξίφη', 'ξιφῶν', 'ξίφεσι(ν)'] }},
-            'λινον': { type: 'noun', e: 'λίνον, -ου (τό)', d: 'Hilo / Lino.', m: 'Sustantivo. 2ª Decl. Neutra.', s: 'Acusativo Singular. C. Directo.', p: { s: ['λίνον', 'λίνον', 'λίνον', 'λίνου', 'λίνῳ'], p: ['λίνα', 'λίνα', 'λίνα', 'λίνων', 'λίνοις'] }},
-            'τερασ': { type: 'noun', e: 'τέρας, -ατος (τό)', d: 'Monstruo / Prodigio.', m: 'Sustantivo. 3ª Decl. (Tema en dental neutro).', s: 'Acusativo Singular. C. Directo.', p: { s: ['τέρας', 'τέρας', 'τέρας', 'τέρατος', 'τέρατι'], p: ['τέρατα', 'τέρατα', 'τέρατα', 'τεράτων', 'τέρασι(ν)'] }},
-            'ημερα': { type: 'noun', e: 'ἡμέρα, -ας (ἡ)', d: 'Día.', m: 'Sustantivo. 1ª Decl. (Alfa pura). Femenino.', s: 'Nominativo Singular. Sujeto.', p: { s: ['ἡμέρα', 'ἡμέρα', 'ἡμέραν', 'ἡμέρας', 'ἡμέρᾳ'], p: ['ἡμέραι', 'ἡμέραι', 'ἡμέρας', 'ἡμερῶν', 'ἡμέραις'] }},
-            'δουλοι': { type: 'noun', e: 'δοῦλος, -ου (ὁ)', d: 'Esclavo / Siervo.', m: 'Sustantivo. 2ª Decl. Masculino.', s: 'Nominativo Plural. Sujeto.', p: { s: ['δοῦλος', 'δοῦλε', 'δοῦλον', 'δούλου', 'δούλῳ'], p: ['δοῦλοι', 'δοῦλοι', 'δούلους', 'δούλων', 'δούλοις'] }},
-            'λαβυρινθον': { type: 'noun', e: 'λαβύρινθος, -ου (ὁ)', d: 'Laberinto.', m: 'Sustantivo. 2ª Decl. Masculino.', s: 'Acusativo Singular. C.C. Lugar (Rige prep. εἰς).', p: { s: ['λαβύρινθος', 'λαβύρινθε', 'λαβύρινθον', 'λαβυρίνθου', 'λαβυρίνθῳ'], p: ['λαβύρινθοι', 'λαβύρινθοι', 'λαβυρίνθους', 'λαβυρίνθων', 'λαβυρίνθοις'] }},
-            'πυλασ': { type: 'noun', e: 'πύλη, -ης (ἡ)', d: 'Puerta.', m: 'Sustantivo. 1ª Decl. (Femenino en eta).', s: 'Acusativo Plural. C. Directo.', p: { s: ['πύλη', 'πύλη', 'πύλην', 'πύλης', 'πύλῃ'], p: ['πύλαι', 'πύλαι', 'πύλας', 'πυλῶν', 'πύλαις'] }},
-            'θηριον': { type: 'noun', e: 'θηρίον, -ου (τό)', d: 'Fiera / Bestia.', m: 'Sustantivo. 2ª Decl. Neutra.', s: 'Nominativo Singular. Sujeto.', p: { s: ['θηρίον', 'θηρίον', 'θηρίον', 'θηρίου', 'θηρίῳ'], p: ['θηρία', 'θηρία', 'θηρία', 'θηρίων', 'θηρίοις'] }},
-            'ηρωα': { type: 'noun', e: 'ἥρως, -ωος (ὁ)', d: 'Héroe.', m: 'Sustantivo. 3ª Decl. (Vocal/Digamma). Masculino.', s: 'Acusativo Singular. CC Dirección (Rige ἐπὶ).', p: { s: ['ἥρως', 'ἥρως', 'ἥρωα', 'ἥρωος', 'ἥρωι'], p: ['ἥρωες', 'ἥρωες', 'ἥρωας', 'ἡρώων', 'ἥρωσι(ν)'] }},
-            'κεφαλησ': { type: 'noun', e: 'κεφαλή, -ῆς (ἡ)', d: 'Cabeza.', m: 'Sustantivo. 1ª Decl. (Femenino en eta).', s: 'Genitivo Singular. C. Régimen (Rige ἐλάβετο).', p: { s: ['κεφαλή', 'κεφαλή', 'κεφαλήν', 'κεφαλῆς', 'κεφαλῇ'], p: ['κεφαλαί', 'κεφαλαί', 'κεφαλάς', 'κεφαλῶν', 'κεφαλαῖς'] }},
-            'στηθοσ': { type: 'noun', e: 'στῆθος, -ους (τό)', d: 'Pecho.', m: 'Sustantivo. 3ª Decl. (Tema en silbante neutro).', s: 'Acusativo Singular. C. Directo.', p: { s: ['στῆθος', 'στῆθος', 'στῆθος', 'στήθους', 'στήθει'], p: ['στήθη', 'στήθη', 'στήθη', 'στηθῶν', 'στήθεσι(ν)'] }},
-            'ναξον': { type: 'noun', e: 'Νάξος, -ου (ἡ)', d: 'Naxos (Isla del Egeo).', m: 'Sustantivo. 2ª Decl. Femenino.', s: 'Acusativo Singular. CC Lugar (Rige πρὸς).', p: { s: ['Νάξος', 'Νάξε', 'Νάξον', 'Νάξου', 'Νάξῳ'], p: ['-', '-', '-', '-', '-'] }},
-            'καιροσ': { type: 'noun', e: 'καιρός, -οῦ (ὁ)', d: 'Tiempo oportuno / Momento.', m: 'Sustantivo. 2ª Decl. Masculino.', s: 'Nominativo Singular. Atributo / Sujeto.', p: { s: ['καιρός', 'καιρέ', 'καιρόν', 'καιροῦ', 'καιρῳ'], p: ['καιροί', 'καιροί', 'καιρούς', 'καιρῶν', 'καιροῖς'] }},
-            'πεισματα': { type: 'noun', e: 'πεῖσμα, -ατος (τό)', d: 'Amarra / Cable de barco.', m: 'Sustantivo. 3ª Decl. (Tema en dental neutro).', s: 'Acusativo Plural. C. Directo.', p: { s: ['πεῖσμα', 'πεῖσμα', 'πεῖσμα', 'πείσματος', 'πείσματι'], p: ['πείσματα', 'πείσματα', 'πείσματα', 'πεισμάτων', 'πείσμασι(ν)'] }},
-            'νησω': { type: 'noun', e: 'νῆσος, -ου (ἡ)', d: 'Isla.', m: 'Sustantivo. 2ª Decl. Femenino.', s: 'Dativo Singular. CC Lugar (Rige ἐν).', p: { s: ['νῆσος', 'νῆσε', 'νῆσον', 'νήσου', 'νήσῳ'], p: ['νῆσοι', 'νῆσοι', 'νήσους', 'νήswν', 'νήσοις'] }},
-            'υπνον': { type: 'noun', e: 'ὕπνος, -ου (ὁ)', d: 'Sueño.', m: 'Sustantivo. 2ª Decl. Masculino.', s: 'Acusativo Singular. C. Directo.', p: { s: ['ὕπνος', 'ὕπνε', 'ὕπνον', 'ὕπνου', 'ὕπνῳ'], p: ['ὕπνοι', 'ὕπνοι', 'ὕπνους', 'ὕπνων', 'ὕπνοις'] }},
+            // Sustantivos
+            'μινωσ': { type: 'noun', e: 'Μίνως, -ωος (ὁ)', d: 'Minos (Rey de Creta).', m: '3ª Decl. (Tema en silbante/ática). Masc.', p: { s: ['Μίνως', 'Μίνως', 'Μίνωα', 'Μίνωος', 'Μίνωι'], p: ['-', '-', '-', '-', '-'] }},
+            'κρητη': { type: 'noun', e: 'Κρήτη, -ης (ἡ)', d: 'Creta.', m: '1ª Decl. (eta). Fem.', p: { s: ['Κρήτη', 'Κρήτη', 'Κρήτην', 'Κρήτης', 'Κρήτῃ'], p: ['-', '-', '-', '-', '-'] }},
+            'κρητην': { type: 'noun', e: 'Κρήτη, -ης (ἡ)', d: 'Creta.', m: '1ª Decl. (eta). Fem.', s: 'Acusativo Sing. (con πρὸς).', p: { s: ['Κρήτη', 'Κρήτη', 'Κρήτην', 'Κρήτης', 'Κρήτῃ'], p: ['-', '-', '-', '-', '-'] }},
+            'νεανιασ': { type: 'noun', e: 'νεανίας, -ου (ὁ)', d: 'Joven.', m: '1ª Decl. Masculina (en -ας).', p: { s: ['νεανίας', 'νεανía', 'νεανίαν', 'νεανίου', 'νεανίᾳ'], p: ['νεανíαι', 'νεανíαι', 'νεανίας', 'νεανιῶν', 'νεανίαις'] }},
+            'παρθενουσ': { type: 'noun', e: 'παρθένος, -ου (ἡ)', d: 'Doncella.', m: '2ª Decl. Femenina.', p: { s: ['παρθένος', 'παρθένε', 'παρθένον', 'παρθένου', 'παρθένῳ'], p: ['παρθένοι', 'παρθένοι', 'παρθένους', 'παρθένων', 'παρθένοις'] }},
+            'μινωταυρω': { type: 'noun', e: 'Μινώταυρος, -ου (ὁ)', d: 'Minotauro.', m: '2ª Decl. Masc.', p: { s: ['Μινώταυρος', 'Μινώταυρε', 'Μινώταυρον', 'Μινωταύρου', 'Μινωταύρῳ'], p: ['Μινώταυροι', 'Μινώταυροι', 'Μινωταύρους', 'Μινωταύρων', 'Μινωtaύροις'] }},
+            'μινωταυρον': { type: 'noun', e: 'Μινώταυρος, -ου (ὁ)', d: 'Minotauro.', m: '2ª Decl. Masc.', p: { s: ['Μινώταυρος', 'Μινώταυρε', 'Μινώταυρον', 'Μινωταύρου', 'Μινωtaύρῳ'], p: ['Μινώταυροι', 'Μινώταυροι', 'Μινωταύρους', 'Μινωταύρων', 'Μινωtaύροις'] }},
+            'θησευσ': { type: 'noun', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo.', m: '3ª Decl. (-ευ). Masc.', p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησéως', 'Θησεῖ'], p: ['Θησεῖς', 'Θησεῖς', 'Θησέας', 'Θησέων', 'Θησεῦσι'] }},
+            'θησεα': { type: 'noun', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo.', m: '3ª Decl. (-ευ). Acusativo Sing.', p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησéως', 'Θησεῖ'], p: ['-','-','-','-','-'] }},
+            'θησευ': { type: 'noun', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo.', m: '3ª Decl. (-ευ). Vocativo Sing.', p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησéως', 'Θησεῖ'], p: ['-','-','-','-','-'] }},
+            'αριαδνη': { type: 'noun', e: 'Ἀριάδνη, -ης (ἡ)', d: 'Ariadna.', m: '1ª Decl. (eta). Fem.', p: { s: ['Ἀριάδνη', 'Ἀριάδνη', 'Ἀριάδnen', 'Ἀριάδνης', 'Ἀριάδνῃ'], p: ['-', '-', '-', '-', '-'] }},
+            'αριαδνην': { type: 'noun', e: 'Ἀριάδνη, -ης (ἡ)', d: 'Ariadna.', m: '1ª Decl. (eta). Acusativo Sing.', p: { s: ['Ἀριάδνη', 'Ἀριάδνη', 'Ἀριάδνην', 'Ἀριάδνης', 'Ἀριάδνῃ'], p: ['-', '-', '-', '-', '-'] }},
+            'ναυν': { type: 'noun', e: 'ναῦς, νεώς (ἡ)', d: 'Nave.', m: '3ª Decl. (Irregular). Fem.', p: { s: ['ναῦς', 'ναῦ', 'ναῦν', 'νεώς', 'νηΐ'], p: ['νῆες', 'νῆες', 'ναῦς', 'νεῶν', 'ναυσí'] }},
+            'νυκτι': { type: 'noun', e: 'νύξ, νυκτός (ἡ)', d: 'Noche.', m: '3ª Decl. (Velar). Fem.', p: { s: ['νύξ', 'νύξ', 'νύκτα', 'νυκτός', 'νυκτί'], p: ['νύκτες', 'νύκτες', 'νύκτας', 'νυκτῶν', 'νuξί'] }},
+            'ξιφοσ': { type: 'noun', e: 'ξíφος, -ους (τό)', d: 'Espada.', m: '3ª Decl. (Silbante neutro).', p: { s: ['ξίφος', 'ξíφος', 'ξίφος', 'ξίφους', 'ξíφει'], p: ['ξíφη', 'ξíφη', 'ξíφη', 'ξιφῶν', 'ξíφεσι'] }},
+            'λινον': { type: 'noun', e: 'λίνον, -ου (τό)', d: 'Hilo.', m: '2ª Decl. Neutro.', p: { s: ['λίνον', 'λίνον', 'λίνον', 'λίνου', 'λίνῳ'], p: ['λίνα', 'λίνα', 'λίνα', 'λίνων', 'λίνοις'] }},
+            'τερασ': { type: 'noun', e: 'τέρας, -ατος (τό)', d: 'Monstruo.', m: '3ª Decl. (Dental neutro).', p: { s: ['τέρας', 'τέρας', 'τέρας', 'τέρατος', 'τέρατι'], p: ['τέρατα', 'τέρατα', 'τέρατα', 'τεράτων', 'τέρασι'] }},
+            'ημερα': { type: 'noun', e: 'ἡμέra, -ας (ἡ)', d: 'Día.', m: '1ª Decl. (Alfa pura). Fem.', p: { s: ['ἡμέρα', 'ἡμέρα', 'ἡμέραν', 'ἡμέρας', 'ἡμέρᾳ'], p: ['ἡμέραι', 'ἡμέραι', 'ἡμέρας', 'ἡμερῶν', 'ἡμέραις'] }},
+            'δουλοι': { type: 'noun', e: 'δοῦλος, -ου (ὁ)', d: 'Esclavos.', m: '2ª Decl. Masc.', p: { s: ['δοῦλος', 'δοῦλε', 'δοῦλον', 'δούλου', 'δούλῳ'], p: ['δοῦλοι', 'δοῦλοι', 'δούلους', 'δούλων', 'δούλοις'] }},
+            'λαβυρινθον': { type: 'noun', e: 'λαβύρινθος, -ου (ὁ)', d: 'Laberinto.', m: '2ª Decl. Masc.', p: { s: ['λαβύρινθος', 'λαβύρινθε', 'λαβύρινθον', 'λαβυρίνθου', 'λαβυρίνθῳ'], p: ['-','-','-','-','-'] }},
+            'πυλασ': { type: 'noun', e: 'πύλη, -ης (ἡ)', d: 'Puertas.', m: '1ª Decl. Fem. Plural.', p: { s: ['πύλη', 'πύλη', 'πύλην', 'πύλης', 'πύλῃ'], p: ['πύλαι', 'πύλαι', 'πύλας', 'πυλῶν', 'πύλαις'] }},
+            'θηριον': { type: 'noun', e: 'θηρίον, -ου (τό)', d: 'Fiera.', m: '2ª Decl. Neutro.', p: { s: ['θηρίον', 'θηρίον', 'θηρίον', 'θηρίου', 'θηρίῳ'], p: ['θηρία', 'θηρία', 'θηρία', 'θηρίων', 'θηρίοις'] }},
+            'ηρωα': { type: 'noun', e: 'ἥρως, -ωος (ὁ)', d: 'Héroe.', m: '3ª Decl. Masc.', p: { s: ['ἥρως', 'ἥρως', 'ἥρωα', 'ἥρωos', 'ἥρωι'], p: ['ἥρωες', 'ἥρωες', 'ἥρωας', 'ἡρώων', 'ἥρωσι'] }},
+            'κεφαλησ': { type: 'noun', e: 'κεφαλή, -ῆς (ἡ)', d: 'Cabeza.', m: '1ª Decl. Fem.', p: { s: ['κεφαλή', 'κεφαλή', 'κεφαλήν', 'κεφαλῆς', 'κεφαλῇ'], p: ['-','-','-','-','-'] }},
+            'στηθοσ': { type: 'noun', e: 'στῆθος, -ους (τό)', d: 'Pecho.', m: '3ª Decl. Neutro.', p: { s: ['στῆθος', 'στῆθος', 'στῆθος', 'στήθους', 'στήθει'], p: ['-','-','-','-','-'] }},
+            'ναξον': { type: 'noun', e: 'Νάξος, -ου (ἡ)', d: 'Naxos.', m: '2ª Decl. Fem.', p: { s: ['Νάξος', 'Νάξε', 'Νάξον', 'Νάξου', 'Νάξῳ'], p: ['-','-','-','-','-'] }},
+            'καιροσ': { type: 'noun', e: 'καιρός, -οῦ (ὁ)', d: 'Momento.', m: '2ª Decl. Masc.', p: { s: ['καιρός', 'καιρέ', 'καιρόν', 'καιροῦ', 'καιρῳ'], p: ['-','-','-','-','-'] }},
+            'πεισματα': { type: 'noun', e: 'πεῖσμα, -ατος (τό)', d: 'Amarras.', m: '3ª Decl. (Dental). Neutro.', p: { s: ['πεῖσμα', 'πεῖσμα', 'πεῖσμα', 'πείσματος', 'πείσματι'], p: ['πείσματα', 'πείσματα', 'πείσματα', 'πεισμάτων', 'πείσμασι'] }},
+            'νησω': { type: 'noun', e: 'νῆσος, -ου (ἡ)', d: 'Isla.', m: '2ª Decl. Fem.', p: { s: ['νῆσος', 'νῆσε', 'νῆσον', 'νήσου', 'νήσῳ'], p: ['-','-','-','-','-'] }},
+            'υπνον': { type: 'noun', e: 'ὕпνος, -ου (ὁ)', d: 'Sueño.', m: '2ª Decl. Masc.', p: { s: ['ὕπνος', 'ὕпνε', 'ὕпνον', 'ὕπνου', 'ὕпνῳ'], p: ['ὕπνοι', 'ὕпνοι', 'ὕпνους', 'ὕπνων', 'ὕпνοις'] }},
+            'εταιρουσ': { type: 'noun', e: 'ἑταῖρος, -ου (ὁ)', d: 'Compañero.', m: '2ª Decl. Masc.', p: { s: ['ἑταῖρος', 'ἑταῖρε', 'ἑταῖρον', 'ἑταíρου', 'ἑταíρῳ'], p: ['ἑταῖροι', 'ἑταῖροι', 'ἑταíρους', 'ἑταíρων', 'ἑταíροις'] }},
+            'εταιροισ': { type: 'noun', e: 'ἑταῖρος, -ου (ὁ)', d: 'Compañero.', m: '2ª Decl. Masc.', s: 'Dativo Plural.', p: { s: ['ἑταῖρος', 'ἑταῖρε', 'ἑταῖρον', 'ἑταíρου', 'ἑταíρῳ'], p: ['ἑταῖροι', 'ἑταῖροι', 'ἑταíρους', 'ἑταíρων', 'ἑταíροις'] }},
+            'αθηναιουσ': { type: 'noun', e: 'Ἀθηναῖος, -ου (ὁ)', d: 'Ateniense.', m: '2ª Decl. Masc.', p: { s: ['Ἀθηναῖος', 'Ἀθηναῖε', 'Ἀθηναῖον', 'Ἀθηναίου', 'Ἀθηναίῳ'], p: ['Ἀθηναῖοι', 'Ἀθηναῖοι', 'Ἀθηναíους', 'Ἀθηναíων', 'Ἀθηναίοις'] }},
 
-            // Verbos (Pasado)
-            'εβασιλευε': { type: 'verb', e: 'βασιλεύω', d: 'Reinaba.', m: 'Pretérito Imperfecto Indicativo. Activo. 3ª sing.', p: { s: ['ἐβασίλευον', 'ἐβασίλευες', 'ἐβασίλευε'], p: ['ἐβασιλεύομεν', 'ἐβασιλεύετε', 'ἐβασίλευον'] }},
-            'ηναγκαζε': { type: 'verb', e: 'ἀναγκάζω', d: 'Obligaba / Forzaba.', m: 'Pretérito Imperfecto Indicativo. Activo. 3ª sing.', exp: 'Aumento temporal (α -> η).', p: { s: ['ἠνάγκαζον', 'ἠνάγκαζες', 'ἠνάγκαζε'], p: ['ἠναγκάζομεν', 'ἠναγκάζετε', 'ἠνάγκαζον'] }},
-            'παρεχειν': { type: 'verb', e: 'παρέχω', d: 'Proporcionar / Entregar.', m: 'Infinitivo Presente Activo.', s: 'Sintagma verbal dependiente de ἠνάγκαζε.' },
-            'εσθιειν': { type: 'verb', e: 'ἐσθίω', d: 'Comer / Devorar.', m: 'Infinitivo Presente Activo.', s: 'Finalidad.' },
-            'ᾤκτιρε': { type: 'verb', e: 'οἰκτίρω', d: 'Se compadecía.', m: 'Imperfecto Indicativo Activo. 3ª sing.', exp: 'Aumento temporal (οι -> ῳ).', p: { s: ['ᾤκτιρον', 'ᾤκτιres', 'ᾤκτιρε'], p: ['ᾠκτίρομεν', 'ᾠκτίρετε', 'ᾤκτιρον'] }},
-            'εβουλετο': { type: 'verb', e: 'βούλομαι', d: 'Quería / Deseaba.', m: 'Imperfecto Indicativo Medio (Deponente). 3ª sing.', p: { s: ['ἐβουλόμην', 'ἐβούλου', 'ἐβούλετο'], p: ['ἐβουλόμεθα', 'ἐβούλεσθε', 'ἐβούλοντο'] }},
-            'σωζειν': { type: 'verb', e: 'σῴζω', d: 'Salvar.', m: 'Infinitivo Presente Activo.' },
-            'εισεβησαν': { type: 'verb', e: 'εἰσβαίνω', d: 'Embarcaron / Entraron.', m: 'Aoristo Radical (III). Activo. 3ª pl.', p: { s: ['εἰσέβην', 'εἰσέβης', 'εἰσέβη'], p: ['εἰσέβημεν', 'εἰσέβητε', 'εἰσέβησαν'] }},
-            'επλευσαν': { type: 'verb', e: 'πλέω', d: 'Navegaron.', m: 'Aoristo Sigmático. Activo. 3ª pl.', p: { s: ['ἔπλευσα', 'ἔπλευσας', 'ἔπλευσε'], p: ['ἐπλεύσαμεν', 'ἐπλεύσατε', 'ἔπleυσαν'] }},
-            'αφικοντο': { type: 'verb', e: 'ἀφικνέομαι', d: 'Llegaron.', m: 'Aoristo Radical (II). Medio (Deponente). 3ª pl.', p: { s: ['ἀφικόμην', 'ἀφίκου', 'ἀφίκετο'], p: ['ἀφικόμεθα', 'ἀφíκεσθε', 'ἀφίκοντο'] }},
-            'ειδε': { type: 'verb', e: 'ὁράω', d: 'Vio.', m: 'Aoristo Radical (2º/fuerte). Activo. 3ª sing.', p: { s: ['εἶδον', 'εἶδες', 'εἶδε'], p: ['εἴδομεν', 'εἴδετε', 'εἶδον'] }},
-            'ἤρα': { type: 'verb', e: 'ἐράω', d: 'Se enamoraba / Amaba.', m: 'Imperfecto Indicativo Activo (Verbo contracto). 3ª sing.', p: { s: ['ἤρων', 'ἤρας', 'ἤρα'], p: ['ἠρῶμεν', 'ἠρᾶτε', 'ἤρων'] }},
-            'παρεσχε': { type: 'verb', e: 'παρέχω', d: 'Proporcionó / Dio.', m: 'Aoristo Radical (2º/fuerte). Activo. 3ª sing.', p: { s: ['παρέσχον', 'παρέσχες', 'παρέσχε'], p: ['παρέσχομεν', 'παρέσχετε', 'παρέσχον'] }},
-            'ειπε': { type: 'verb', e: 'λέγω', d: 'Dijo.', m: 'Aoristo Radical (2º/fuerte). Activo. 3ª sing.', p: { s: ['εἶπον', 'εἶπες', 'εἶπε'], p: ['εἴπομεν', 'εἴπετε', 'εἶπον'] }},
-            'φοβου': { type: 'verb', e: 'φοβέω', d: 'Temas.', m: 'Imperativo Presente Medio. 2ª sing.' },
-            'αποκτεινε': { type: 'verb', e: 'ἀποκτείνω', d: 'Mata.', m: 'Imperativo Aoristo Activo. 2ª sing.' },
-            'εγενετο': { type: 'verb', e: 'γίγνομαι', d: 'Sucedió / Se hizo.', m: 'Aoristo Radical (2º/fuerte). Medio (Deponente). 3ª sing.', p: { s: ['ἐγενóμην', 'ἐγένου', 'ἐγένετο'], p: ['ἐγενόμεθα', 'ἐγένεσθε', 'ἐγένοντο'] }},
-            'ἤγαγον': { type: 'verb', e: 'ἄγω', d: 'Condujeron / Llevaron.', m: 'Aoristo Radical (Reduplicado). Activo. 3ª pl.', p: { s: ['ἤγαγον', 'ἤγαγες', 'ἤγαγε'], p: ['ἠγάγομεν', 'ἠγάgete', 'ἤγαγον'] }},
-            'εκλεισαν': { type: 'verb', e: 'κλείω', d: 'Cerraron.', m: 'Aoristo Sigmático. Activo. 3ª pl.', p: { s: ['ἔκλεισα', 'ἔκλεισας', 'ἔκλεισε'], p: ['ἐκλείσαμεν', 'ἐκλείσατε', 'ἔκλεισαν'] }},
-            'εφοβειτο': { type: 'verb', e: 'φοβέω', d: 'Temía.', m: 'Imperfecto Indicativo Medio (Deponente). 3ª sing.', p: { s: ['ἐφοβούμην', 'ἐφοβοῦ', 'ἐφοβεῖτο'], p: ['ἐφοβούμεθα', 'ἐφοβεῖσθε', 'ἐφοβοῦντο'] }},
-            'εβρυχατο': { type: 'verb', e: 'βρυχάομαι', d: 'Rugía.', m: 'Imperfecto Indicativo Medio. 3ª sing.', exp: 'Verbo contracto (α+ε=α).', p: { s: ['ἐβρυχώμην', 'ἐβρυχῶ', 'ἐβρυχᾶτο'], p: ['ἐβρυχώμεθα', 'ἐβρυχᾶσθε', 'ἐβρυχῶντο'] }},
-            'ὡρμήσατο': { type: 'verb', e: 'ὁρμάω', d: 'Se abalanzó.', m: 'Aoristo Sigmático. Medio. 3ª sing.', p: { s: ['ὡρμησάμην', 'ὡρμήσω', 'ὡρμήσατο'], p: ['ὡρμησάμεθα', 'ὡρμήσασθε', 'ὡρμήσαντο'] }},
-            'ελαβετο': { type: 'verb', e: 'λαμβάνω', d: 'Se agarró.', m: 'Aoristo Radical (fuerte). Medio. 3ª sing.', s: 'Rige Genitivo.', p: { s: ['ἐλαβόμην', 'ἐλάβου', 'ἐλάβετο'], p: ['ἐλαβόμεθα', 'ἐλάβεσθε', 'ἐλάβοντο'] }},
-            'ετυψε': { type: 'verb', e: 'τύπτω', d: 'Golpeó.', m: 'Aoristo Sigmático. Activo. 3ª sing.', p: { s: ['ἔτυψα', 'ἔτυψας', 'ἔτυψε'], p: ['ἐτύψαμεν', 'ἐτύψατε', 'ἔτυψαν'] }},
-            'αпеκτεινε': { type: 'verb', e: 'ἀποκτείνω', d: 'Mató.', m: 'Aoristo Líquido (Asigmático). Activo. 3ª sing.', p: { s: ['ἀπέκτεινα', 'ἀπέκτεινας', 'ἀπέκτεινε'], p: ['ἀπεκτείναμεν', 'ἀπεκτείνατε', 'ἀπέκτειναν'] }},
-            'ελαβε': { type: 'verb', e: 'λαμβάνω', d: 'Cogió / Tomó.', m: 'Aoristo Radical (fuerte). Activo. 3ª sing.', p: { s: ['ἔλαβον', 'ἔλαβες', 'ἔλαβε'], p: ['ἐλάβομεν', 'ἐλάβετε', 'ἔλαβον'] }},
-            'ηγησατο': { type: 'verb', e: 'ἡγέομαι', d: 'Guió / Lideró.', m: 'Aoristo Sigmático. Medio (Deponente). 3ª sing.', s: 'Rige Dativo.', p: { s: ['ἡγησάμην', 'ἡγήσω', 'ἡγήσατο'], p: ['ἡγησάμεθα', 'ἡγήσασθε', 'ἡγήσαντο'] }},
-            'εξηλθον': { type: 'verb', e: 'ἐξέρχομαι', d: 'Salieron.', m: 'Aoristo Radical (Supletivo raíz ἐλθ-). Activo. 3ª pl.', p: { s: ['ἐξῆλθον', 'ἐξῆλθες', 'ἐξῆλθε'], p: ['ἐξήλθομεν', 'ἐξήλθετε', 'ἐξῆλθον'] }},
-            'ανεπαυσαντο': { type: 'verb', e: 'ἀναπαύω', d: 'Descansaron.', m: 'Aoristo Sigmático. Medio (Reflexivo). 3ª pl.', p: { s: ['ἀνεπαυσάμην', 'ἀνεπαύσω', 'ἀνεπαύσατο'], p: ['ἀνεπαυσάμεθα', 'ἀνεπαυσάσθε', 'ανεπαύσαντο'] }},
-            'εκαθευδον': { type: 'verb', e: 'καθεύδω', d: 'Dormían.', m: 'Imperfecto Indicativo Activo. 3ª pl.', p: { s: ['ἐκάθευδον', 'ἐκάθευδες', 'ἐκάθευδε'], p: ['ἐκαθεύδομεν', 'ἐκαθεύδετε', 'ἐκάθευδον'] }},
-            'ηγειρε': { type: 'verb', e: 'ἐγείρω', d: 'Despertó.', m: 'Aoristo Activo. 3ª sing.', p: { s: ['ἤγειρα', 'ἤγειρας', 'ἤγειρε'], p: ['ἠγείραμεν', 'ἠγείραte', 'ἤγειραν'] }},
-            'εστιν': { type: 'verb', e: 'εἰμί', d: 'Es / Existe.', m: 'Presente Indicativo. 3ª sing.' },
-            'αποπλειν': { type: 'verb', e: 'ἀποπλέω', d: 'Zarpar / Alejarse navegando.', m: 'Infinitivo Presente Activo.' },
-            'ελυσαν': { type: 'verb', e: 'λύω', d: 'Desataron / Soltaron.', m: 'Aoristo Sigmático. Activo. 3ª pl.', p: { s: ['ἔλυσα', 'ἔλυσας', 'ἔλυσε'], p: ['ἐλύσαμεν', 'ἐλύσατε', 'ἔλυσαν'] }},
-            'ελιπον': { type: 'verb', e: 'λείπω', d: 'Dejaron.', m: 'Aoristo Radical (fuerte). Activo. 3ª pl.', p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }},
-            'ελιπε': { type: 'verb', e: 'λείπω', d: 'Dejó.', m: 'Aoristo Radical (fuerte). Activo. 3ª sing.', p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }},
-            'εβοα': { type: 'verb', e: 'βοάω', d: 'Gritaba.', m: 'Imperfecto Indicativo Activo. 3ª sing.', p: { s: ['ἐβόων', 'ἐβόας', 'ἐβόα'], p: ['ἐβοῶμεν', 'ἐβοᾶτε', 'ἐβόων'] }},
-            'κατελιπεσ': { type: 'verb', e: 'καταλείπω', d: 'Abandonaste.', m: 'Aoristo Radical (fuerte). Activo. 2ª sing.', p: { s: ['κατέλιπον', 'κατέλιπες', 'κατέλιπε'], p: ['κατελίπομεν', 'κατελίπετε', 'κατέλιπον'] }},
+            // Verbos
+            'εβασιλευε': { type: 'verb', e: 'βασιλεύω', d: 'Reinaba.', m: 'Imperfecto Act. Ind. 3s.', p: { s: ['ἐβασίλευον', 'ἐβασíλευες', 'ἐβασíλευε'], p: ['ἐβασιλεύομεν', 'ἐβασιλεύετε', 'ἐβασίλευον'] }},
+            'ηναγκαζε': { type: 'verb', e: 'ἀναγκάζω', d: 'Obligaba.', m: 'Imperfecto Act. Ind. 3s.', p: { s: ['ἠνάγκαζον', 'ἠνάγκαζες', 'ἠνάγκαζε'], p: ['ἠναγκάζομεν', 'ἠναγκάζετε', 'ἠνάγκαζον'] }},
+            'παρεχειν': { type: 'verb', e: 'παρέχω', d: 'Proporcionar.', m: 'Infinitivo Pres. Activo.' },
+            'εσθιειν': { type: 'verb', e: 'ἐσθίω', d: 'Comer.', m: 'Infinitivo Pres. Activo.' },
+            'ᾤκτιρε': { type: 'verb', e: 'οἰκτίρω', d: 'Se compadecía.', m: 'Imperfecto Act. Ind. 3s.', p: { s: ['ᾤκτιρον', 'ᾤκτιρες', 'ᾤκτιρε'], p: ['ᾠκτίρομεν', 'ᾠκτίrete', 'ᾤκτιρον'] }},
+            'εβουλεto': { type: 'verb', e: 'βούλομαι', d: 'Quería.', m: 'Imperfecto Medio (Deponente). 3s.', p: { s: ['ἐβουλόμην', 'ἐβούλου', 'ἐβούλετο'], p: ['ἐβουλόμεθα', 'ἐβούλεσθε', 'ἐβούλοντο'] }},
+            'σωζειν': { type: 'verb', e: 'σῴζω', d: 'Salvar.', m: 'Infinitivo Pres. Activo.' },
+            'εισεβησαν': { type: 'verb', e: 'εἰσβαίνω', d: 'Embarcaron.', m: 'Aoristo Radical (III). Act. Ind. 3p.', p: { s: ['εἰσéβην', 'εἰσéβης', 'εἰσéβη'], p: ['εἰσéβημεν', 'εἰσéβηte', 'εἰσéβησαν'] }},
+            'επleυσαν': { type: 'verb', e: 'πλέω', d: 'Navegaron.', m: 'Aoristo Sigmático. Act. Ind. 3p.', p: { s: ['ἔπλευσα', 'ἔπλευσas', 'ἔπλευσε'], p: ['ἐπλεύσαμεν', 'ἐπλεύσατε', 'ἔπλευσαν'] }},
+            'αφικοντο': { type: 'verb', e: 'ἀφικνέομαι', d: 'Llegaron.', m: 'Aoristo Radical. Medio (Deponente). 3p.', p: { s: ['ἀφικόμην', 'ἀφíκου', 'ἀφíκετο'], p: ['ἀφικόμεθα', 'ἀφíκεσθε', 'ἀφíκοντο'] }},
+            'ειδε': { type: 'verb', e: 'ὁράω', d: 'Vio.', m: 'Aoristo Radical (fuerte). Act. Ind. 3s.', p: { s: ['εἶδον', 'εἶδες', 'εἶδε'], p: ['εἴδομεν', 'εἴδετε', 'εἶδον'] }},
+            'ηра': { type: 'verb', e: 'ἐράω', d: 'Amaba / Se enamoraba.', m: 'Imperfecto Activo. 3s. (Contracto: ἠρά-ε -> ἤρα).', p: { s: ['ἤρων', 'ἤρας', 'ἤρα'], p: ['ἠρῶμεν', 'ἠρᾶτε', 'ἤρων'] }},
+            'παρεσχε': { type: 'verb', e: 'παρέχω', d: 'Proporcionó.', m: 'Aoristo Radical (fuerte). Act. Ind. 3s.', p: { s: ['παρέσχον', 'παρέσχες', 'παρέσχε'], p: ['παρέσχομεν', 'παρέσχετε', 'παρέσχon'] }},
+            'ειπε': { type: 'verb', e: 'λέγω', d: 'Dijo.', m: 'Aoristo Radical (fuerte). Act. Ind. 3s.', p: { s: ['εἶπον', 'εἶπες', 'εἶπε'], p: ['εἴπομεν', 'εἴπετε', 'εἶπον'] }},
+            'φοβου': { type: 'verb', e: 'φοβέω', d: 'Temas.', m: 'Imperativo Presente Medio. 2s.', exp: 'Singular: φοβοῦ | Plural: φοβεῖσthe.' },
+            'αποκτεινε': { type: 'verb', e: 'ἀποκτείνω', d: 'Mata.', m: 'Imperativo Presente Activo. 2s.', exp: 'Singular: ἀπόκτεινε | Plural: ἀποκτείvετε.' },
+            'εγενεto': { type: 'verb', e: 'γíγνομαι', d: 'Sucedió.', m: 'Aoristo Radical. Medio (Deponente). 3s.', p: { s: ['ἐγενóμην', 'ἐγένου', 'ἐγένετο'], p: ['ἐγενόμεθα', 'ἐγένεσθε', 'ἐγένονto'] }},
+            'ηγαγον': { type: 'verb', e: 'ἄγω', d: 'Condujeron.', m: 'Aoristo Radical (Redupl.). Act. Ind. 3p.', p: { s: ['ἤγαγον', 'ἤγαγες', 'ἤγαγε'], p: ['ἠγάγομεν', 'ἠγάgete', 'ἤγαγον'] }},
+            'εκleiσαν': { type: 'verb', e: 'κλείω', d: 'Cerraron.', m: 'Aoristo Sigmático. Act. Ind. 3p.', p: { s: ['ἔκλεισα', 'ἔκλεισας', 'ἔκλεισε'], p: ['ἐκλείσαμεν', 'ἐκλείσατε', 'ἔκλεισαν'] }},
+            'εφοβειto': { type: 'verb', e: 'φοβέω', d: 'Temía.', m: 'Imperfecto Medio (Deponente). 3s.', p: { s: ['ἐφοβούμην', 'ἐφοβοῦ', 'ἐφοβεῖto'], p: ['ἐφοβούμεθα', 'ἐφοβεῖσθε', 'ἐφοβούvτο'] }},
+            'εβρυχαto': { type: 'verb', e: 'βρυχάομαι', d: 'Rugía.', m: 'Imperfecto Medio. 3s. (α+ε=α).', p: { s: ['ἐβρυχώμην', 'ἐβρυχῶ', 'ἐβρυχᾶto'], p: ['ἐβρυχώμεθα', 'ἐβρυχᾶσθε', 'ἐβρυχῶνto'] }},
+            'ὡρμήσαto': { type: 'verb', e: 'ὁρμάω', d: 'Se abalanzó.', m: 'Aoristo Sigmático. Medio. 3s.', p: { s: ['ὡρμησάμην', 'ὡρμήσω', 'ὡρμήσαto'], p: ['ὡρμησάμεθα', 'ὡρμησάσθε', 'ὡρμησάνto'] }},
+            'ελαβεto': { type: 'verb', e: 'λαμβάνω', d: 'Se agarró.', m: 'Aoristo Radical (fuerte). Medio. 3s.', p: { s: ['ἐλαβόμην', 'ἐλάβου', 'ἐλάβεto'], p: ['ἐλαβóμεθα', 'ἐλάβεσθε', 'ἐλάβονto'] }},
+            'ετυψε': { type: 'verb', e: 'τύпτω', d: 'Golpeó.', m: 'Aoristo Sigmático. Act. Ind. 3s.', p: { s: ['ἔτυψa', 'ἔτυψας', 'ἔτυψε'], p: ['ἐτύψαμεν', 'ἐτύψατε', 'ἔτυψαν'] }},
+            'αпеκτεινε': { type: 'verb', e: 'ἀποκτείνω', d: 'Mató.', m: 'Aoristo Líquido. Act. Ind. 3s.', p: { s: ['ἀπέκτεινα', 'ἀπέκτεινας', 'ἀπέκτεινε'], p: ['ἀπεκτείναμεν', 'ἀπεκτείναte', 'ἀπέκτειναν'] }},
+            'ελαβε': { type: 'verb', e: 'λαμβάνω', d: 'Tomó.', m: 'Aoristo Radical. Act. Ind. 3s.', p: { s: ['ἔλαβον', 'ἔλαβες', 'ἔλαβε'], p: ['ἐλάβομεν', 'ἐλάβετε', 'ἔλαβον'] }},
+            'ηγησαto': { type: 'verb', e: 'ἡγέομαι', d: 'Guió.', m: 'Aoristo Sigmático. Medio. 3s.', p: { s: ['ἡγησάμην', 'ἡγήσω', 'ἡγήσαto'], p: ['ἡγησάμεθα', 'ἡγήσασθε', 'ἡγήσανto'] }},
+            'εξηλθον': { type: 'verb', e: 'ἐξέρχομαι', d: 'Salieron.', m: 'Aoristo Radical (supletivo). Act. Ind. 3p.', p: { s: ['ἐξῆλθον', 'ἐξῆλθες', 'ἐξῆλθε'], p: ['ἐξήλθομεν', 'ἐξήλθετε', 'ἐξῆλθον'] }},
+            'ανεπαυσανto': { type: 'verb', e: 'ἀναπαύω', d: 'Descansaron.', m: 'Aoristo Sigmático. Medio. 3p.', p: { s: ['ἀνεπαυσάμην', 'ἀνεπαύσω', 'ἀνεπαύσαto'], p: ['ἀνεπαυσάμεθα', 'ἀνεπαυσάσθε', 'ανεπαύσανto'] }},
+            'εκαθευδον': { type: 'verb', e: 'καθεύδω', d: 'Dormían.', m: 'Imperfecto Act. Ind. 3p.', p: { s: ['ἐκάθευδον', 'ἐκάθευδες', 'ἐκάθευδε'], p: ['ἐκαθεύδομεν', 'ἐκαθεύδετε', 'ἐκάθευδον'] }},
+            'ηγειρε': { type: 'verb', e: 'ἐγείρω', d: 'Despertó.', m: 'Aoristo Act. Ind. 3s.', p: { s: ['ἤγειρα', 'ἤγειρας', 'ἤγειρε'], p: ['ἠγείραμεν', 'ἠγείραte', 'ἤγειραν'] }},
+            'ελυσαν': { type: 'verb', e: 'λύω', d: 'Desataron.', m: 'Aoristo Sigmático. Act. Ind. 3p.', p: { s: ['ἔλυσα', 'ἔλυσας', 'ἔλυσε'], p: ['ἐλύσαμεν', 'ἐλύσαte', 'ἔλυσαν'] }},
+            'ελιπον': { type: 'verb', e: 'λείπω', d: 'Dejaron.', m: 'Aoristo Radical. Act. Ind. 3p.', p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }},
+            'ελιπε': { type: 'verb', e: 'λείπω', d: 'Abandonó.', m: 'Aoristo Radical. Act. Ind. 3s.', p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπεte', 'ἔλιπον'] }},
+            'εβοα': { type: 'verb', e: 'βοάω', d: 'Gritaba.', m: 'Imperfecto Act. Ind. 3s. (βοα-ε -> βοα).', p: { s: ['ἐβόων', 'ἐβόας', 'ἐβóα'], p: ['ἐβοῶμεν', 'ἐβοᾶτε', 'ἐβόων'] }},
+            'κατελιπεσ': { type: 'verb', e: 'καταλείπω', d: 'Abandonaste.', m: 'Aoristo Radical. Act. Ind. 2s.', p: { s: ['κατέλιπον', 'κατέλιπες', 'κατέλιπε'], p: ['κατελίπομεν', 'καteλίπετε', 'κατελίπον'] }},
+            'εστιν': { type: 'verb', e: 'εἰμί', d: 'Es.', m: 'Presente Indicativo. 3s.' },
 
-            // Partículas y otros
-            'ο': { type: 'particle', e: 'ὁ', d: 'El.', m: 'Artículo det. Nom. Sing. Masc.' },
-            'μεν': { type: 'particle', e: 'μέν', d: 'Por una parte.', m: 'Partícula coordinante.' },
-            'εν': { type: 'particle', e: 'ἐν', d: 'En.', m: 'Preposición de Dativo.' },
-            'τη': { type: 'particle', e: 'τῇ', d: 'La.', m: 'Artículo. Dat. Sing. Fem.' },
-            'και': { type: 'particle', e: 'καί', d: 'Y.', m: 'Conjunción copulativa.' },
-            'τουσ': { type: 'particle', e: 'τοὺς', d: 'Los.', m: 'Artículo. Acc. Plur. Masc.' },
-            'επτα': { type: 'particle', e: 'ἑπτά', d: 'Siete.', m: 'Numeral cardinal indeclinable.' },
-            'τω': { type: 'particle', e: 'τῷ', d: 'El.', m: 'Artículo. Dat. Sing. Masc.' },
-            'δε': { type: 'particle', e: 'δέ', d: 'Pero / Y / Por otra parte.', m: 'Partícula coordinante.' },
-            'εισ': { type: 'particle', e: 'εἰς', d: 'Hacia / A.', m: 'Preposición de Acusativo.' },
-            'ουν': { type: 'particle', e: 'οὖν', d: 'Así pues / Por tanto.', m: 'Partícula ilativa.' },
-            'την': { type: 'particle', e: 'τὴν', d: 'La.', m: 'Artículo. Acc. Sing. Fem.' },
-            'προσ': { type: 'particle', e: 'πρός', d: 'Hacia.', m: 'Preposición de Acusativo.' },
-            'επει': { type: 'particle', e: 'ἐπεί', d: 'Cuando / Después de que.', m: 'Conjunción subordinante temporal.' },
-            'η': { type: 'particle', e: 'ἡ', d: 'La.', m: 'Artículo. Nom. Sing. Fem.' },
-            'τον': { type: 'particle', e: 'τὸν', d: 'El.', m: 'Artículo. Acc. Sing. Masc.' },
-            'αυτου': { type: 'particle', e: 'αὐτοῦ', d: 'De él.', m: 'Pron. personal (3ª pers). Genitivo Masc. Sing.' },
-            'το': { type: 'particle', e: 'τὸ', d: 'El / Lo.', m: 'Artículo. Nom/Acc Sing. Neutro.' },
-            'μη': { type: 'particle', e: 'μή', d: 'No.', m: 'Adverbio de negación (Imperativo).' },
-            'αλλα': { type: 'particle', e: 'ἀλλά', d: 'Sino / Pero.', m: 'Conjunción adversativa.' },
-            'οι': { type: 'particle', e: 'οἱ', d: 'Los.', m: 'Artículo. Nom. Plur. Masc.' },
-            'τασ': { type: 'particle', e: 'τὰς', d: 'Las.', m: 'Artículo. Acc. Plur. Fem.' },
-            'ουκ': { type: 'particle', e: 'οὐ / οὐκ', d: 'No.', m: 'Adverbio de negación (Indicativo).' },
-            'ενταυθα': { type: 'particle', e: 'ἐνταῦθα', d: 'Allí / Entonces.', m: 'Adverbio demostrativo.' },
-            'δη': { type: 'particle', e: 'δή', d: 'Ciertamente.', m: 'Partícula enfática.' },
-            'δεινωσ': { type: 'particle', e: 'δεινῶς', d: 'Terriblemente.', m: 'Adverbio de modo.' },
-            'επι': { type: 'particle', e: 'ἐπί', d: 'Contra / Sobre.', m: 'Preposición de Acusativo.' },
-            'τησ': { type: 'particle', e: 'τῆς', d: 'De la.', m: 'Artículo. Gen. Sing. Fem.' },
-            'ουτωσ': { type: 'particle', e: 'οὕτως', d: 'Así / De este modo.', m: 'Adverbio de modo.' },
-            'επειτα': { type: 'particle', e: 'ἔπειτα', d: 'Luego / Después.', m: 'Adverbio temporal.' },
-            'τοισ': { type: 'particle', e: 'τοῖς', d: 'Los.', m: 'Artículo. Dat. Plur. Masc.' },
-            'πρωτον': { type: 'particle', e: 'πρῶτον', d: 'Primero.', m: 'Adverbio temporal.' },
-            'αλλοι': { type: 'particle', e: 'ἄλλοι', d: 'Otros / Los demás.', m: 'Adj/Pron. Nom. Plur. Masc.' },
-            'ταχεωσ': { type: 'particle', e: 'ταχέως', d: 'Rápidamente.', m: 'Adverbio de modo.' },
-            'τα': { type: 'particle', e: 'τὰ', d: 'Los / Las.', m: 'Artículo. Nom/Acc Plur. Neutro.' },
-            'τοτε': { type: 'particle', e: 'τότε', d: 'Entonces.', m: 'Adverbio temporal.' },
-            'μαλιστα': { type: 'particle', e: 'μάλιστα', d: 'Muchísimo.', m: 'Adverbio superlativo.' },
-            'ω': { type: 'particle', e: 'ὦ', d: '¡Oh!.', m: 'Interjección (Vocativo).' },
-            'αρα': { type: 'particle', e: 'ἆρα', d: '¿Acaso...?', m: 'Partícula interrogativa.' },
-            'με': { type: 'particle', e: 'με', d: 'Me / A mí.', m: 'Pron. personal (1ª pers). Acusativo Sing.' },
+            // Partículas, artículos y otros
+            'ο': { type: 'art', e: 'ὁ', d: 'El.', m: 'Artículo. Nom. Sg. Masc.' },
+            'η': { type: 'art', e: 'ἡ', d: 'La.', m: 'Artículo. Nom. Sg. Fem.' },
+            'το': { type: 'art', e: 'τὸ', d: 'El / Lo.', m: 'Artículo. Nom/Acc Sg. Neutro.' },
+            'μεν': { type: 'part', e: 'μέν', d: 'Por una parte.', m: 'Partícula coordinante.' },
+            'δε': { type: 'part', e: 'δέ', d: 'Por otra parte / Pero.', m: 'Partícula coordinante.' },
+            'εν': { type: 'prep', e: 'ἐν', d: 'En.', m: 'Preposición de Dativo.' },
+            'τη': { type: 'art', e: 'τῇ', d: 'La.', m: 'Artículo. Dat. Sg. Fem.' },
+            'και': { type: 'conj', e: 'καί', d: 'Y.', m: 'Conjunción copulativa.' },
+            'τουσ': { type: 'art', e: 'τοὺς', d: 'Los.', m: 'Artículo. Acc. Pl. Masc.' },
+            'επτα': { type: 'adj', e: 'ἑπτά', d: 'Siete.', m: 'Cardinal indeclinable.' },
+            'τω': { type: 'art', e: 'τῷ', d: 'El.', m: 'Artículo. Dat. Sg. Masc.' },
+            'εισ': { type: 'prep', e: 'εἰς', d: 'Hacia / A.', m: 'Preposición de Acusativo.' },
+            'ουν': { type: 'part', e: 'οὖν', d: 'Así pues / Por tanto.', m: 'Partícula ilativa.' },
+            'την': { type: 'art', e: 'τὴν', d: 'La.', m: 'Artículo. Acc. Sg. Fem.' },
+            'προσ': { type: 'prep', e: 'πρός', d: 'Hacia.', m: 'Preposición de Acusativo.' },
+            'επει': { type: 'conj', e: 'ἐπεί', d: 'Cuando.', m: 'Conjunción temporal.' },
+            'τον': { type: 'art', e: 'τὸν', d: 'El.', m: 'Artículo. Acc. Sg. Masc.' },
+            'αυτου': { type: 'pron', e: 'αὐτοῦ', d: 'De él.', m: 'Pronombre. Genitivo Sg. Masc.' },
+            'μη': { type: 'neg', e: 'μή', d: 'No.', m: 'Negación (prohibitiva).' },
+            'αλλα': { type: 'conj', e: 'ἀλλά', d: 'Sino / Pero.', m: 'Conjunción adversativa.' },
+            'οι': { type: 'art', e: 'οἱ', d: 'Los.', m: 'Artículo. Nom. Pl. Masc.' },
+            'τασ': { type: 'art', e: 'τὰς', d: 'Las.', m: 'Artículo. Acc. Pl. Fem.' },
+            'ουκ': { type: 'neg', e: 'οὐκ', d: 'No.', m: 'Negación (indicativa).' },
+            'ενταυθα': { type: 'adv', e: 'ἐνταῦθα', d: 'Allí / Entonces.', m: 'Adverbio demostrativo.' },
+            'δη': { type: 'part', e: 'δή', d: 'Ciertamente.', m: 'Partícula enfática.' },
+            'δεινωσ': { type: 'adv', e: 'δεινῶς', d: 'Terriblemente.', m: 'Adverbio de modo.' },
+            'επι': { type: 'prep', e: 'ἐπί', d: 'Contra.', m: 'Preposición de Acusativo.' },
+            'τησ': { type: 'art', e: 'τῆς', d: 'De la.', m: 'Artículo. Gen. Sg. Fem.' },
+            'ουτωσ': { type: 'adv', e: 'οὕτως', d: 'Así.', m: 'Adverbio de modo.' },
+            'επειτα': { type: 'adv', e: 'ἔπειτα', d: 'Luego.', m: 'Adverbio temporal.' },
+            'τοισ': { type: 'art', e: 'τοῖς', d: 'Los.', m: 'Artículo. Dat. Pl. Masc.' },
+            'πρωτον': { type: 'adv', e: 'πρῶτον', d: 'Primero.', m: 'Adverbio ordinal.' },
+            'αλλοι': { type: 'adj', e: 'ἄλλοι', d: 'Otros.', m: 'Adjetivo. Nom. Pl. Masc.' },
+            'τα': { type: 'art', e: 'τὰ', d: 'Los / Las.', m: 'Artículo. Neutro Plural.' },
+            'τοτε': { type: 'adv', e: 'τότε', d: 'Entonces.', m: 'Adverbio temporal.' },
+            'μαλιστα': { type: 'adv', e: 'μάλιστα', d: 'Muchísimo.', m: 'Adverbio superlativo.' },
+            'ω': { type: 'interj', e: 'ὦ', d: 'Oh.', m: 'Interjección.' },
+            'αρα': { type: 'part', e: 'ἆρα', d: '¿Acaso...?', m: 'Partícula interrogativa.' },
+            'με': { type: 'pron', e: 'με', d: 'Me / A mí.', m: 'Pronombre. Acusativo Sg.' },
         };
 
         function normalize(str) {
@@ -402,57 +386,52 @@
             const data = dict[key];
             const content = document.getElementById('oracle-content');
             if (!data) {
-                content.innerHTML = `<div class="p-8 bg-slate-900 rounded-xl border-2 border-red-900/50 shadow-inner"><p class="text-red-400 font-bold text-lg">El Oráculo calla... No hay registros para "${original}".</p><p class="text-sky-600 text-xs mt-2 italic">Asegúrate de pulsar en una palabra válida.</p></div>`;
+                content.innerHTML = `<div class="p-8 bg-slate-900 rounded-xl border-2 border-red-900/50 shadow-inner"><p class="text-red-400 font-bold text-lg">El Oráculo calla para "${original}". Prueba con otra palabra.</p></div>`;
             } else {
                 let html = `
-                    <div class="mb-6 bg-slate-900/50 p-6 rounded-2xl border border-amber-900/30">
-                        <h4 class="greek-display text-6xl text-white mb-2 tracking-tight drop-shadow-lg">${original}</h4>
-                        <p class="text-amber-500 font-bold text-xl font-cinzel">Enunciado: ${data.e}</p>
+                    <div class="mb-6">
+                        <h4 class="greek-display text-6xl text-white mb-2 tracking-tight">${original}</h4>
+                        <p class="text-amber-500 font-bold text-xl">Lema: ${data.e}</p>
                     </div>
                     <div class="space-y-8">
                         <div class="bg-slate-900 p-8 rounded-xl border border-sky-800 shadow-2xl">
-                            <p class="text-xs uppercase text-sky-500 font-black mb-4 tracking-[0.2em] border-b border-sky-900 pb-2">Análisis Morfosintáctico</p>
-                            <div class="grid grid-cols-1 gap-4">
-                                <p class="text-sm text-sky-100"><span class="text-sky-600 font-bold uppercase mr-2">Morfología:</span> ${data.m}</p>
-                                ${data.s ? `<p class="text-sm text-sky-100"><span class="text-sky-600 font-bold uppercase mr-2">Sintaxis:</span> ${data.s}</p>` : ''}
-                                <div class="mt-6 p-4 bg-amber-900/10 border-l-4 border-amber-600">
-                                    <p class="text-2xl italic text-white font-serif">"${data.d}"</p>
-                                </div>
-                            </div>
+                            <p class="text-xs uppercase text-sky-500 font-black mb-4 tracking-widest border-b border-sky-900 pb-2">Análisis Morfológico</p>
+                            <p class="text-sm text-sky-100"><strong>Categoría:</strong> ${data.m || '---'}</p>
+                            <p class="text-2xl mt-6 italic text-white font-serif border-l-4 border-amber-600 pl-4">"${data.d}"</p>
                         </div>
-                        ${data.exp ? `<div class="bg-amber-950/20 p-6 rounded-xl border border-amber-900/40 text-sm italic text-amber-200 shadow-lg"><i data-lucide="info" class="w-5 h-5 inline mr-2 mb-1"></i><strong>Nota Gramatical:</strong> ${data.exp}</div>` : ''}
+                        ${data.exp ? `<div class="bg-amber-950/20 p-6 rounded-xl border border-amber-900/40 text-sm italic text-amber-200 shadow-lg"><strong>Nota del Oráculo:</strong> ${data.exp}</div>` : ''}
                 `;
 
-                if (data.type === 'noun' && data.p) {
-                    html += `
-                        <div class="fade-in">
-                            <p class="paradigm-title flex items-center gap-2"><i data-lucide="table"></i> Declinación Tradicional (N-V-A-G-D)</p>
-                            <table class="oracle-table">
-                                <thead><tr><th>Caso</th><th>Singular</th><th>Plural</th></tr></thead>
-                                <tbody>
-                                    <tr><td>Nominativo</td><td>${data.p.s[0]}</td><td>${data.p.p[0]}</td></tr>
-                                    <tr><td>Vocativo</td><td>${data.p.s[1]}</td><td>${data.p.p[1]}</td></tr>
-                                    <tr><td>Acusativo</td><td>${data.p.s[2]}</td><td>${data.p.p[2]}</td></tr>
-                                    <tr><td>Genitivo</td><td>${data.p.s[3]}</td><td>${data.p.p[3]}</td></tr>
-                                    <tr><td>Dativo</td><td>${data.p.s[4]}</td><td>${data.p.p[4]}</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                } else if (data.type === 'verb' && data.p) {
-                    html += `
-                        <div class="fade-in">
-                            <p class="paradigm-title flex items-center gap-2"><i data-lucide="activity"></i> Conjugación de Pasado (Pers/Num)</p>
-                            <table class="oracle-table">
-                                <thead><tr><th>Persona</th><th>Singular</th><th>Plural</th></tr></thead>
-                                <tbody>
-                                    <tr><td>1ª pers.</td><td>${data.p.s[0]}</td><td>${data.p.p[0]}</td></tr>
-                                    <tr><td>2ª pers.</td><td>${data.p.s[1]}</td><td>${data.p.p[1]}</td></tr>
-                                    <tr><td>3ª pers.</td><td>${data.p.s[2]}</td><td>${data.p.p[2]}</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
+                if (data.p) {
+                    if (data.type === 'noun') {
+                        html += `
+                            <div class="fade-in">
+                                <p class="paradigm-title">Declinación (N-V-A-G-D)</p>
+                                <table class="oracle-table">
+                                    <thead><tr><th>Caso</th><th>Singular</th><th>Plural</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Nominativo</td><td>${data.p.s[0]}</td><td>${data.p.p[0]}</td></tr>
+                                        <tr><td>Vocativo</td><td>${data.p.s[1]}</td><td>${data.p.p[1]}</td></tr>
+                                        <tr><td>Acusativo</td><td>${data.p.s[2]}</td><td>${data.p.p[2]}</td></tr>
+                                        <tr><td>Genitivo</td><td>${data.p.s[3]}</td><td>${data.p.p[3]}</td></tr>
+                                        <tr><td>Dativo</td><td>${data.p.s[4]}</td><td>${data.p.p[4]}</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>`;
+                    } else if (data.type === 'verb') {
+                        html += `
+                            <div class="fade-in">
+                                <p class="paradigm-title">Conjugación de Pasado</p>
+                                <table class="oracle-table">
+                                    <thead><tr><th>Persona</th><th>Singular</th><th>Plural</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>1ª pers.</td><td>${data.p.s[0]}</td><td>${data.p.p[0]}</td></tr>
+                                        <tr><td>2ª pers.</td><td>${data.p.s[1]}</td><td>${data.p.p[1]}</td></tr>
+                                        <tr><td>3ª pers.</td><td>${data.p.s[2]}</td><td>${data.p.p[2]}</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>`;
+                    }
                 }
                 html += `</div>`;
                 content.innerHTML = html;
@@ -461,13 +440,11 @@
             lucide.createIcons();
         }
 
-        function closeOracle() {
-            document.getElementById('oracle-drawer').classList.add('translate-x-full');
-        }
+        function closeOracle() { document.getElementById('oracle-drawer').classList.add('translate-x-full'); }
 
         function startGame() {
             const name = document.getElementById('teamName').value.trim();
-            if (!name) return alert("Identificaos, valientes atenienses.");
+            if (!name) return alert("Identificaos, tributos.");
             activeTeam = name;
             document.getElementById('introStage').classList.add('hidden-stage');
             document.getElementById('gameHeader').classList.remove('hidden-stage');
@@ -492,51 +469,40 @@
                 document.getElementById('papiro2-container').classList.remove('hidden-stage');
                 document.getElementById('prueba2').classList.remove('opacity-40', 'pointer-events-none');
                 document.getElementById('prueba1').classList.add('opacity-40');
-                alert("¡Correcto! El Papiro II se ha revelado.");
             } else { fail(); }
         }
 
         function checkPrueba2() {
             const a1 = document.getElementById('p2-q1').value;
             const a2 = document.getElementById('p2-q2').value;
-            if (a1 === "2" && a2 === "1") {
+            if (a1 === "2" && a2 === "2") {
                 document.getElementById('prueba3').classList.remove('opacity-40', 'pointer-events-none');
                 document.getElementById('prueba2').classList.add('opacity-40');
-                alert("Análisis certero. Continúa.");
             } else { fail(); }
         }
 
         function checkPrueba3() {
             const a1 = normalize(document.getElementById('p3-q1').value);
-            // Respuesta: κατελιπεσ (abandonaste)
-            if (a1 === 'κατελιπεσ') {
+            if (a1 === 'αποκτεινε') {
                 document.getElementById('papiro3-container').classList.remove('hidden-stage');
                 document.getElementById('prueba4').classList.remove('opacity-40', 'pointer-events-none');
                 document.getElementById('prueba3').classList.add('opacity-40');
-                alert("Traducción impecable. El Papiro III es tuyo.");
             } else { fail(); }
         }
 
         function checkPrueba4() {
-            const v1 = document.getElementById('l1').value; // Imp (3): εκαθευδον, εφοβειτο, εβοα
-            const v2 = document.getElementById('l2').value; // Decl νυκτι (3)
-            const v3 = document.getElementById('l3').value; // Caso νησω (5 - Dativo)
-            const v4 = document.getElementById('l4').value; // Aor Act (7): επλευσαν, ηγειρε, ειπε, ελυσαν, ελιπον, ελιπε, κατελιπεσ
-            const v5 = document.getElementById('l5').value; // Pers κατελιπεσ (2)
-            
-            if (v1 == "3" && v2 == "3" && v3 == "5" && v4 == "7" && v5 == "2") {
-                endGame(true);
-            } else { fail(); }
+            const v1 = document.getElementById('l1').value; // Imp (3)
+            const v2 = document.getElementById('l2').value; // Decl (3)
+            const v3 = document.getElementById('l3').value; // Caso (5)
+            const v4 = document.getElementById('l4').value; // Aor Act (7)
+            const v5 = document.getElementById('l5').value; // Pers (2)
+            if (v1 == "3" && v2 == "3" && v3 == "5" && v4 == "7" && v5 == "2") { endGame(true); } else { fail(); }
         }
 
         function fail() {
             mistakes++;
             timeRemaining -= 60;
-            const msg = document.createElement('div');
-            msg.className = "fixed top-10 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-2xl font-bold z-[300] fade-in";
-            msg.innerHTML = "¡ERROR! El Minotauro se acerca... (-1 min)";
-            document.body.appendChild(msg);
-            setTimeout(() => msg.remove(), 2000);
+            alert("¡Error! El Minotauro se acerca... (-1 min)");
         }
 
         function endGame(victory) {
@@ -545,21 +511,17 @@
             document.getElementById('gameHeader').classList.add('hidden-stage');
             document.getElementById('endStage').classList.remove('hidden-stage');
             if (victory) {
-                document.getElementById('endEmoji').innerText = "☀️🏛️";
-                document.getElementById('endTitle').innerText = "¡Teseo ha escapado!";
-                document.getElementById('endText').innerText = `Enhorabuena, ${activeTeam}. Gracias a vuestra sabiduría, los atenienses regresan a casa. ¡La corona de laurel os pertenece!`;
-                document.getElementById('endStats').innerHTML = `
-                    <div class="flex flex-col"><p class="text-xs text-sky-500 uppercase">Tiempo final</p><p class="text-4xl font-bold text-emerald-400">${document.getElementById('timerDisplay').innerText}</p></div>
-                    <div class="flex flex-col"><p class="text-xs text-sky-500 uppercase">Errores cometidos</p><p class="text-4xl font-bold text-amber-400">${mistakes}</p></div>
-                `;
+                document.getElementById('endTitle').innerText = "¡Habéis Escapado!";
+                document.getElementById('endText').innerText = `Enhorabuena, ${activeTeam}. Gracias a vuestro saber, Teseo ha regresado triunfante a Atenas.`;
+                document.getElementById('endStats').innerHTML = `<div><p class='text-xs uppercase'>Tiempo restante</p><p class='text-4xl font-bold'>${document.getElementById('timerDisplay').innerText}</p></div><div><p class='text-xs uppercase'>Errores</p><p class='text-4xl font-bold'>${mistakes}</p></div>`;
             } else {
                 document.getElementById('endEmoji').innerText = "💀";
                 document.getElementById('endTitle').innerText = "Vencidos";
-                document.getElementById('endText').innerText = "El laberinto ha reclamado vuestras vidas. El Minotauro reina en la oscuridad.";
+                document.getElementById('endText').innerText = "El laberinto ha reclamado vuestras vidas.";
             }
         }
 
-        function resetGame() { if(confirm("¿Seguro que quieres reiniciar la partida?")) location.reload(); }
+        function resetGame() { if(confirm("¿Reiniciar aventura?")) location.reload(); }
     </script>
 </body>
 </html>
