@@ -98,7 +98,7 @@
 
         .translation-reveal { background: rgba(14, 165, 233, 0.05); border: 1px dashed var(--sky); color: #7dd3fc; padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; font-style: italic; line-height: 1.8; animation: fadeIn 1s; }
 
-        /* NUEVO: Efecto Premium Flash Divino */
+        /* Efecto Premium Flash Divino */
         @keyframes divineFlash {
             0% { background-color: rgba(251, 191, 36, 0.25); }
             100% { background-color: transparent; }
@@ -108,7 +108,7 @@
 </head>
 <body class="p-4 md:p-8 flex flex-col items-center">
 
-    <!-- NUEVO: Polvo Mítico en el fondo (Premium) -->
+    <!-- Polvo Mítico en el fondo (Premium) -->
     <canvas id="divineDust" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1;"></canvas>
 
     <div id="threadBar" class="ariadne-thread" style="width: 0%"></div>
@@ -117,6 +117,7 @@
     <audio id="bgMusic" loop><source src="https://cdn.pixabay.com/audio/2022/03/15/audio_5f4f3c7c63.mp3"></audio>
     <audio id="successSound"><source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b3d7c2f2f.mp3"></audio>
     <audio id="failSound"><source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c2f9d1f.mp3"></audio>
+    <audio id="scrollSound"><source src="https://www.soundjay.com/misc/sounds/paper-flip-1.mp3"></audio>
 
     <!-- CABECERA -->
     <header class="w-full max-w-7xl flex justify-between items-center border-b border-sky-900 pb-8 mb-12 hidden-stage" id="gameHeader">
@@ -146,7 +147,7 @@
                 <i data-lucide="scroll" class="w-6 h-6 text-sky-400 group-hover:text-amber-400"></i>
                 <span class="text-xs uppercase font-black tracking-widest text-sky-100">Biblioteca</span>
             </button>
-            <div class="flex items-center gap-4 bg-slate-950 px-6 py-4 rounded-2xl border-2 border-red-900 shadow-xl">
+            <div class="flex items-center gap-4 bg-slate-950 px-6 py-4 rounded-2xl border-2 border-red-900 shadow-xl transition-all" id="timerContainer">
                 <i data-lucide="hourglass" class="w-6 h-6 text-red-500 animate-pulse"></i>
                 <span id="timerDisplay" class="font-cinzel text-4xl text-red-400 font-black">55:00</span>
             </div>
@@ -265,15 +266,15 @@
                         <div class="flex justify-center gap-6">
                             <div class="flex flex-col items-center">
                                 <span class="text-[10px] text-sky-600 mb-2 font-black">IMPERF. P3</span>
-                                <input type="number" id="c1" class="candado-input">
+                                <input type="number" id="c1" class="candado-input" placeholder="0">
                             </div>
                             <div class="flex flex-col items-center">
                                 <span class="text-[10px] text-sky-600 mb-2 font-black">AOR. ACT. P3</span>
-                                <input type="number" id="c2" class="candado-input">
+                                <input type="number" id="c2" class="candado-input" placeholder="0">
                             </div>
                             <div class="flex flex-col items-center">
                                 <span class="text-[10px] text-sky-600 mb-2 font-black">DECL. νυκτί</span>
-                                <input type="number" id="c3" class="candado-input">
+                                <input type="number" id="c3" class="candado-input" placeholder="0">
                             </div>
                         </div>
                     </div>
@@ -298,29 +299,34 @@
             <button onclick="toggleCulture()" class="text-sky-600 hover:text-white"><i data-lucide="x-circle" class="w-12 h-12"></i></button>
         </div>
         <div id="culture-content" class="space-y-12 text-sky-100 font-serif leading-relaxed">
+            <!-- Lore Completo -->
             <div class="myth-card">
                 <b class="text-amber-500 text-3xl block mb-4 font-cinzel tracking-wider">Ariadna</b>
-                <p class="text-lg opacity-90">Hija del rey Minos y Pasífae. Ayudó a Teseo a escapar del Laberinto entregándole un hilo mágico (el "hilo de Ariadna"). Fue trágicamente abandonada por el héroe en la isla de Naxos, donde fue hallada por el dios Dioniso.</p>
+                <p class="text-lg opacity-90">Hija del rey Minos y Pasífae. Ayudó a Teseo a escapar del Laberinto entregándole un hilo mágico. Fue abandonada en la isla de Naxos.</p>
+            </div>
+            <div class="myth-card">
+                <b class="text-amber-500 text-3xl block mb-4 font-cinzel tracking-wider">Dioniso</b>
+                <p class="text-lg opacity-90">Dios que encontró a Ariadna en Naxos y la desposó tras la huida de Teseo, convirtiendo su corona en una constelación.</p>
             </div>
             <div class="myth-card">
                 <b class="text-amber-500 text-3xl block mb-4 font-cinzel tracking-wider">El Minotauro</b>
-                <p class="text-lg opacity-90">Llamado Asterión, era un monstruo con cuerpo de hombre y cabeza de toro, fruto de la antinatural unión de Pasífae con el toro de Creta. Habitaba el centro del Laberinto y exigía sacrificios humanos periódicos.</p>
+                <p class="text-lg opacity-90">Llamado Asterión, era un monstruo con cuerpo de hombre y cabeza de toro. Habitaba el centro del Laberinto y exigía sacrificios humanos periódicos.</p>
             </div>
             <div class="myth-card">
                 <b class="text-amber-500 text-3xl block mb-4 font-cinzel tracking-wider">Rey Minos</b>
-                <p class="text-lg opacity-90">Hijo de Zeus y Europa, gobernante supremo de Creta. Constructor del Laberinto y poseedor de la flota más poderosa del Egeo. Tras su muerte, fue nombrado juez de las almas en el Hades junto a Radamantis.</p>
+                <p class="text-lg opacity-90">Hijo de Zeus y Europa, gobernante supremo de Creta. Constructor del Laberinto y poseedor de la flota más poderosa del Egeo.</p>
             </div>
             <div class="myth-card">
                 <b class="text-amber-500 text-3xl block mb-4 font-cinzel tracking-wider">Teseo y Egeo</b>
-                <p class="text-lg opacity-90">Teseo se ofreció para salvar a Atenas del tributo. Su padre, Egeo, se lanzó al mar (dando nombre al mar Egeo) desde el Cabo Sunión al ver las velas negras de su regreso, creyendo erróneamente que su hijo había muerto.</p>
+                <p class="text-lg opacity-90">Teseo se ofreció para salvar a Atenas. Su padre, Egeo, se lanzó al mar desde el Cabo Sunión al ver las velas negras de su regreso, creyendo que su hijo había muerto.</p>
             </div>
             <div class="myth-card">
                 <b class="text-amber-500 text-3xl block mb-4 font-cinzel tracking-wider">Dédalo e Ícaro</b>
-                <p class="text-lg opacity-90">Dédalo, brillante arquitecto, diseñó el Laberinto. Para huir de la ira de Minos, fabricó alas de cera y plumas. Su hijo Ícaro murió al volar demasiado cerca del Sol, representando la tragedia de la *hybris* o desmesura.</p>
+                <p class="text-lg opacity-90">Dédalo diseñó el Laberinto. Para huir de la ira de Minos, fabricó alas de cera. Su hijo Ícaro murió al volar demasiado cerca del Sol, representando la tragedia de la desmesura.</p>
             </div>
             <div class="myth-card">
                 <b class="text-amber-500 text-3xl block mb-4 font-cinzel tracking-wider">Pasífae y la Vaca</b>
-                <p class="text-lg opacity-90">Maldita por Poseidón con un deseo irracional hacia un toro blanco, Pasífae pidió a Dédalo que construyera una vaca de madera hueca para poder consumar su pasión. De esta trágica unión nació el Minotauro.</p>
+                <p class="text-lg opacity-90">Maldita por Poseidón con un deseo irracional hacia un toro blanco, Pasífae pidió a Dédalo que construyera una vaca de madera hueca. De esta unión nació el Minotauro.</p>
             </div>
         </div>
     </div>
@@ -339,59 +345,27 @@
     </div>
 
     <script>
-        // --- NUEVO: SISTEMA PREMIUM DE POLVO DIVINO ---
+        // --- SISTEMA DE POLVO DIVINO ---
         const canvas = document.getElementById('divineDust');
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
-        
         function initDust() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particlesArray = [];
-            for (let i = 0; i < 70; i++) {
-                particlesArray.push(new Particle());
-            }
+            for (let i = 0; i < 70; i++) particlesArray.push(new Particle());
             animateDust();
         }
-        
         class Particle {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2;
-                this.speedY = Math.random() * 0.4 + 0.1;
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2; this.speedY = Math.random() * 0.4 + 0.1;
                 this.opacity = Math.random() * 0.4 + 0.1;
             }
-            update() {
-                this.y -= this.speedY;
-                if (this.y < 0) {
-                    this.y = canvas.height;
-                    this.x = Math.random() * canvas.width;
-                }
-            }
-            draw() {
-                ctx.fillStyle = `rgba(251, 191, 36, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            update() { this.y -= this.speedY; if (this.y < 0) this.y = canvas.height; }
+            draw() { ctx.fillStyle = `rgba(251, 191, 36, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        
-        function animateDust() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            requestAnimationFrame(animateDust);
-        }
-        
-        window.addEventListener('resize', () => {
-            if(canvas) {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-        });
+        function animateDust() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateDust); }
+        window.addEventListener('resize', () => { if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } });
 
         // --- BASE DE DATOS DE TEXTOS ---
         const texts = [
@@ -402,7 +376,7 @@
 
         // --- DICCIONARIO MAESTRO OMNISCIENTE ---
         const dict = {
-            // Artículos y Partículas (AÑADIDOS PARADIGMAS A LOS ARTÍCULOS)
+            // Artículos y Partículas
             'ο': { type: 'n', e: 'ὁ', d: 'el', m: 'Artículo. Nom. Sg. Masc.', formIdx: 0, p: { s: ['ὁ', '-', 'τὸν', 'τοῦ', 'τῷ'], p: ['οἱ', '-', 'τοὺς', 'τῶν', 'τοῖς'] }, exp: 'Funciona como actualizador del Sujeto principal.' },
             'η': { type: 'n', e: 'ἡ', d: 'la', m: 'Artículo. Nom. Sg. Fem.', formIdx: 0, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Funciona como actualizador del Sujeto femenino.' },
             'το': { type: 'n', e: 'τὸ', d: 'el, lo', m: 'Artículo. Nom/Acus. Sg. Neutro.', formIdx: 2, p: { s: ['τὸ', '-', 'τὸ', 'τοῦ', 'τῷ'], p: ['τὰ', '-', 'τὰ', 'τῶν', 'τοῖς'] }, exp: 'Determina objetos neutros, en este caso como Objeto Directo.' },
@@ -410,7 +384,7 @@
             'τον': { type: 'n', e: 'τὸν', d: 'al / el', m: 'Artículo. Acus. Sg. Masc.', formIdx: 2, p: { s: ['ὁ', '-', 'τὸν', 'τοῦ', 'τῷ'], p: ['οἱ', '-', 'τοὺς', 'τῶν', 'τοῖς'] }, exp: 'Determina al Objeto Directo.' },
             'την': { type: 'n', e: 'τὴν', d: 'la', m: 'Artículo. Acus. Sg. Fem.', formIdx: 2, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Determina al Objeto Directo femenino.' },
             'τη': { type: 'n', e: 'τῇ', d: 'la', m: 'Artículo. Dat. Sg. Fem.', formIdx: 4, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Complemento Circunstancial regido por la preposición ἐν.' },
-            'τησ': { type: 'n', e: 'τῆς', d: 'de la', m: 'Artículo. Gen. Sg. Fem.', formIdx: 3, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Indica posesión o rige verbos de tacto/aprensión.' },
+            'τησ': { type: 'n', e: 'τῆς', d: 'de la', m: 'Artículo. Gen. Sg. Fem.', formIdx: 3, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Genitivo de posesión. Con el sustantivo κεφαλῆς indica la parte del cuerpo que Teseo agarra.' },
             'τω': { type: 'n', e: 'τῷ', d: 'al', m: 'Artículo. Dat. Sg. Masc.', formIdx: 4, p: { s: ['ὁ/τὸ', '-', 'τὸν/τὸ', 'τοῦ', 'τῷ'], p: ['οἱ/τὰ', '-', 'τοὺς/τὰ', 'τῶν', 'τοῖς'] }, exp: 'Marca el Complemento Indirecto.' },
             'τουσ': { type: 'n', e: 'τοὺς', d: 'los', m: 'Artículo. Acus. Pl. Masc.', formIdx: 7, p: { s: ['ὁ', '-', 'τὸν', 'τοῦ', 'τῷ'], p: ['οἱ', '-', 'τοὺς', 'τῶν', 'τοῖς'] }, exp: 'Acompaña al Objeto Directo en plural.' },
             'τασ': { type: 'n', e: 'τὰς', d: 'las', m: 'Artículo. Acus. Pl. Fem.', formIdx: 7, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Acompaña al Objeto Directo femenino plural.' },
@@ -421,12 +395,13 @@
             'μεν': { e: 'μέν', d: 'por una parte', m: 'Partícula coordinante.', exp: 'Prepara un contraste inminente, suele ir seguida de δέ ("por una parte... por otra").' },
             'δε': { e: 'δέ', d: 'pero, y', m: 'Partícula coordinante.', exp: 'Enlace principal narrativo; puede ser copulativo o adversativo.' },
             'και': { e: 'καί', d: 'y', m: 'Conjunción copulativa.', exp: 'Une elementos del mismo nivel sintáctico.' },
+            'γαρ': { e: 'γάρ', d: 'pues', m: 'Partícula causal.', exp: 'Explica la razón por la cual Teseo se asusta: por el rugido de la fiera.' },
             'ουν': { e: 'οὖν', d: 'así pues', m: 'Partícula ilativa.', exp: 'Marca la consecuencia lógica de la acción anterior.' },
-            'επει': { e: 'ἐπεί', d: 'cuando', m: 'Conjunción subordinante temporal.', exp: 'Introduce una oración subordinada de tiempo.' },
+            'επει': { e: 'ἐπεί', d: 'cuando', m: 'Conjunción subordinante temporal.', exp: 'Conjunción temporal. Marca el inicio de una nueva escena en el relato.' },
             'αλλ': { e: 'ἀλλά', d: 'sino / pero', m: 'Conjunción adversativa.', exp: 'Expresa oposición fuerte.' },
             'αλλα': { e: 'ἀλλά', d: 'sino / pero', m: 'Conjunción adversativa.', exp: 'Expresa oposición fuerte.' },
             'δη': { e: 'δή', d: 'ciertamente', m: 'Partícula enfática.', exp: 'Subraya o da énfasis a la palabra que acompaña.' },
-            'μη': { e: 'μή', d: 'no', m: 'Adverbio de negación prohibitiva.', exp: 'Utilizada junto al imperativo para expresar prohibición.' },
+            'μη': { e: 'μή', d: 'no', m: 'Adverbio de negación prohibitiva.', exp: 'Negación subjetiva. Se usa aquí para dar una orden negativa a Teseo.' },
             'ουκ': { e: 'οὐκ', d: 'no', m: 'Adverbio de negación objetiva.', exp: 'Niega hechos reales en modo indicativo.' },
             'ω': { e: 'ὦ', d: 'oh', m: 'Interjección.', exp: 'Acompaña y refuerza al caso Vocativo.' },
             'αρα': { e: 'ἆρα', d: '¿acaso?', m: 'Partícula interrogativa.', exp: 'Introduce preguntas directas.' },
@@ -436,16 +411,16 @@
             'επι': { e: 'ἐπί', d: 'contra / sobre', m: 'Preposición.', exp: 'Rige Acusativo con verbos de movimiento indicando hostilidad.' },
             'επτα': { e: 'ἑπτά', d: 'siete', m: 'Numeral cardinal.', exp: 'Adjetivo indeclinable.' },
             'με': { e: 'με', d: 'me', m: 'Pronombre Personal. 1ª Sg. Acus.', exp: 'Funciona como Objeto Directo.' },
-            'αυτου': { e: 'αὐτοῦ', d: 'de él', m: 'Pronombre Fático. Gen. Sg. Masc.', exp: 'Cumple función de complemento de régimen verbal (con verbos de deseo/amor).' },
+            'αυτου': { e: 'αὐτοῦ', d: 'de él', m: 'Pronombre Fático. Gen. Sg. Masc.', exp: 'Cumple función de complemento de régimen verbal.' },
 
             // Sustantivos y Adjetivos
             'μινωσ': { type: 'n', e: 'Μίνως, -ωος (ὁ)', d: 'Minos', m: 'Sustantivo. 3ª Decl. Nom. Sg. Masc.', formIdx: 0, p: { s: ['Μίνως', 'Μίνως', 'Μίνωα', 'Μίνωος', 'Μίνωι'], p: ['-', '-', '-', '-', '-'] }, exp: 'Funciona como Sujeto de la primera oración.' },
             'κρητη': { type: 'n', e: 'Κρήτη, -ης (ἡ)', d: 'Creta', m: 'Sustantivo. 1ª Decl. Dat. Sg. Fem.', formIdx: 4, p: { s: ['Κρήτη', 'Κρήτη', 'Κρήτην', 'Κρήτης', 'Κρήτῃ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Complemento Circunstancial de Lugar regido por ἐν.' },
             'κρητην': { type: 'n', e: 'Κρήτη, -ης (ἡ)', d: 'Creta', m: 'Sustantivo. 1ª Decl. Acus. Sg. Fem.', formIdx: 2, p: { s: ['Κρήτη', 'Κρήτη', 'Κρήτην', 'Κρήτης', 'Κρήτῃ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Destino, regido por la preposición πρὸς.' },
-            'αθηναιουσ': { type: 'n', e: 'Ἀθηναῖος, -ου (ὁ)', d: 'atenienses', m: 'Sustantivo. 2ª Decl. Acus. Pl. Masc.', formIdx: 7, p: { s: ['Ἀθηναῖος', 'Ἀθηναῖε', 'Ἀθηναῖον', 'Ἀθηναίου', 'Ἀθηναίῳ'], p: ['Ἀθηναῖοι', 'Ἀθηναῖοι', 'Ἀθηναίους', 'Ἀθηναίων', 'Ἀθηναίοις'] }, exp: 'Sujeto de la oración de infinitivo u Objeto Directo del verbo obligar.' },
+            'αθηναιουσ': { type: 'n', e: 'Ἀθηναῖος, -ου (ὁ)', d: 'atenienses', m: 'Sustantivo. 2ª Decl. Acus. Pl. Masc.', formIdx: 7, p: { s: ['Ἀθηναῖος', 'Ἀθηναῖε', 'Ἀθηναῖον', 'Ἀθηναίου', 'Ἀθηναίῳ'], p: ['Ἀθηναῖοι', 'Ἀθηναῖοι', 'Ἀθηναίους', 'Ἀθηναίων', 'Ἀθηναίοις'] }, exp: 'Objeto Directo del verbo obligar.' },
             'νεανιασ': { type: 'n', e: 'νεανίας, -ου (ὁ)', d: 'muchachos', m: 'Sustantivo. 1ª Decl. Acus. Pl. Masc.', formIdx: 7, p: { s: ['νεανίας', 'νεανία', 'νεανίαν', 'νεανίου', 'νεανίᾳ'], p: ['νεανίαι', 'νεανίαι', 'νεανίας', 'νεανιῶν', 'νεανίαις'] }, exp: 'Objeto Directo, parte del tributo exigido.' },
             'παρθενουσ': { type: 'n', e: 'παρθένος, -ου (ἡ)', d: 'doncellas', m: 'Sustantivo. 2ª Decl. Acus. Pl. Fem.', formIdx: 7, p: { s: ['παρθένος', 'παρθένε', 'παρθένον', 'παρθένου', 'παρθένῳ'], p: ['παρθένοι', 'παρθένοι', 'παρθένους', 'παρθένων', 'παρθένοις'] }, exp: 'Etimológicamente da lugar al Partenón (templo de la virgen).' },
-            'μινωταυρω': { type: 'n', e: 'Μινώταυρος, -ου (ὁ)', d: 'Minotauro', m: 'Sustantivo. 2ª Decl. Dat. Sg. Masc.', formIdx: 4, p: { s: ['Μινώταυρος', 'Μινώταυρε', 'Μινώταυρον', 'Μινωταύρου', 'Μινωταύρῳ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Complemento Indirecto de ventaja/daño (comer para el Minotauro).' },
+            'μινωταυρω': { type: 'n', e: 'Μινώταυρος, -ου (ὁ)', d: 'Minotauro', m: 'Sustantivo. 2ª Decl. Dat. Sg. Masc.', formIdx: 4, p: { s: ['Μινώταυρος', 'Μινώταυρε', 'Μινώταυρον', 'Μινωταύρου', 'Μινωταύρῳ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Complemento Indirecto de ventaja/daño.' },
             'μινωταυρον': { type: 'n', e: 'Μινώταυρος, -ου (ὁ)', d: 'Minotauro', m: 'Sustantivo. 2ª Decl. Acus. Sg. Masc.', formIdx: 2, p: { s: ['Μινώταυρος', 'Μινώταυρε', 'Μινώταυρον', 'Μινωταύρου', 'Μινωταύρῳ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Objeto Directo, víctima de Teseo.' },
             'θησευσ': { type: 'n', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo', m: 'Sustantivo. 3ª Decl. Nom. Sg. Masc.', formIdx: 0, p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησέως', 'Θησεῖ'], p: ['Θησεῖς', 'Θησεῖς', 'Θησέας', 'Θησέων', 'Θησεῦσι'] }, exp: 'Funciona como Sujeto. Héroe ático.' },
             'θησεα': { type: 'n', e: 'Θησεύς, -έως (ὁ)', d: 'Teseo', m: 'Sustantivo. 3ª Decl. Acus. Sg. Masc.', formIdx: 2, p: { s: ['Θησεύς', 'Θησεῦ', 'Θησέα', 'Θησέως', 'Θησεῖ'], p: ['Θησεῖς', 'Θησεῖς', 'Θησέας', 'Θησέων', 'Θησεῦσι'] }, exp: 'Objeto Directo (Ariadna lo vio).' },
@@ -455,7 +430,7 @@
             'ναυν': { type: 'n', e: 'ναῦς, νεώς (ἡ)', d: 'barco', m: 'Sustantivo. 3ª Decl. Acus. Sg. Fem.', formIdx: 2, p: { s: ['ναῦς', 'ναῦ', 'ναῦν', 'νεώς', 'νηί'], p: ['νῆες', 'νῆες', 'ναῦς', 'νεῶν', 'ναυσί'] }, exp: 'Sustantivo irregular, Complemento Circunstancial de Dirección.' },
             'αριαδνη': { type: 'n', e: 'Ἀριάδνη, -ης (ἡ)', d: 'Ariadna', m: 'Sustantivo. 1ª Decl. Nom. Sg. Fem.', formIdx: 0, p: { s: ['Ἀριάδνη', 'Ἀριάδνη', 'Ἀριάδνην', 'Ἀριάδνης', 'Ἀριάδνῃ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Funciona como Sujeto.' },
             'αριαδνην': { type: 'n', e: 'Ἀριάδνη, -ης (ἡ)', d: 'Ariadna', m: 'Sustantivo. 1ª Decl. Acus. Sg. Fem.', formIdx: 2, p: { s: ['Ἀριάδνη', 'Ἀριάδνη', 'Ἀριάδνην', 'Ἀριάδνης', 'Ἀριάδνῃ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Funciona como Objeto Directo de abandonar.' },
-            'νυκτι': { type: 'n', e: 'νύξ, νυκτός (ἡ)', d: 'noche', m: 'Sustantivo. 3ª Decl. Dat. Sg. Fem.', formIdx: 4, p: { s: ['νύξ', 'νύξ', 'νύκτα', 'νυκτός', 'νυκτί'], p: ['νύκτες', 'νύκτες', 'νύκτας', 'νυκτῶν', 'νυξί'] }, exp: 'Complemento Circunstancial de Tiempo, regido por ἐν.' },
+            'νυκτι': { type: 'n', e: 'νύξ, νυκτός (ἡ)', d: 'noche', m: 'Sustantivo. 3ª Decl. Dat. Sg. Fem.', formIdx: 4, p: { s: ['νύξ', 'νύξ', 'νύκτα', 'νυκτός', 'νυκτί'], p: ['νύκτες', 'νύκτες', 'νύκτας', 'νυκτῶν', 'νυξί'] }, exp: 'Complemento Circunstancial de Tiempo.' },
             'ξιφοσ': { type: 'n', e: 'ξίφος, -ους (τό)', d: 'espada', m: 'Sustantivo. 3ª Decl. Acus. Sg. Neutro.', formIdx: 2, p: { s: ['ξίφος', 'ξίφος', 'ξίφος', 'ξίφους', 'ξίφει'], p: ['-', '-', '-', '-', '-'] }, exp: 'Objeto Directo, el arma entregada a Teseo.' },
             'λινον': { type: 'n', e: 'λίνον, -ου (τό)', d: 'hilo', m: 'Sustantivo. 2ª Decl. Nom/Acus. Sg. Neutro.', formIdx: 2, p: { s: ['λίνον', 'λίνον', 'λίνον', 'λίνου', 'λίνῳ'], p: ['-', '-', '-', '-', '-'] }, exp: 'Objeto Directo, el mítico hilo de Ariadna.' },
             'τερασ': { type: 'n', e: 'τέρας, -ατος (τό)', d: 'monstruo', m: 'Sustantivo. 3ª Decl. Acus. Sg. Neutro.', formIdx: 2, p: { s: ['τέρας', 'τέρας', 'τέρας', 'τέρατος', 'τέρατι'], p: ['τέρατα', 'τέρατα', 'τέρατα', 'τεράτων', 'τέρασι'] }, exp: 'Objeto Directo de matar.' },
@@ -482,48 +457,47 @@
             'τοτε': { e: 'τότε', d: 'entonces', m: 'Adverbio temporal.', exp: 'Sitúa la acción en el momento exacto.' },
             'μαλιστα': { e: 'μάλιστα', d: 'sobre todo', m: 'Adverbio superlativo.', exp: 'Intensifica el miedo de Ariadna al máximo grado.' },
 
-            // Verbos (Totalmente completados con Voces y Explicaciones)
-            'εβασιλευε': { type: 'v', e: 'βασιλεύω', d: 'reinaba', m: 'Verbo. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἐβασίλευον', 'ἐβασίλευες', 'ἐβασίλευε'], p: ['ἐβασιλεύομεν', 'ἐβασιλεύετε', 'ἐβασίλευον'] }, exp: 'Describe una acción continua en el pasado.' },
-            'ηναγκαζε': { type: 'v', e: 'ἀναγκάζω', d: 'obligaba', m: 'Verbo. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἠνάγκαζον', 'ἠνάγκαζες', 'ἠνάγκαζε'], p: ['ἠναγκάζομεν', 'ἠναγκάζετε', 'ἠνάγκαζον'] }, exp: 'Verbo principal que rige una subordinada sustantiva de infinitivo.' },
-            'παρεχειν': { type: 'v', e: 'παρέχω', d: 'entregar', m: 'Verbo. Presente Infinitivo Activo.', p: { s: ['παρέχειν'], p: [] }, exp: 'Infinitivo que completa el sentido del verbo "obligaba".' },
-            'εσθιειν': { type: 'v', e: 'ἐσθίω', d: 'comer', m: 'Verbo. Presente Infinitivo Activo.', p: { s: ['ἐσθίειν'], p: [] }, exp: 'Infinitivo usado con valor de propósito o finalidad (para que el Minotauro los coma).' },
-            'ωκτιρε': { type: 'v', e: 'οἰκτίρω', d: 'sintió piedad', m: 'Verbo. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ᾤκτιρον', 'ᾤκτιρες', 'ᾤκτιρε'], p: ['ᾠκτίρομεν', 'ᾠκτίρετε', 'ᾤκτιρον'] }, exp: 'El verbo presenta un aumento irregular en diptongo.' },
-            'εβουλετο': { type: 'v', e: 'βούλομαι', d: 'quería', m: 'Verbo. Imperf. Indicativo Medio-Pasivo 3ª Sing.', formIdx: 2, p: { s: ['ἐβουλόμην', 'ἐβούλου', 'ἐβούλετο'], p: ['ἐβουλόμεθα', 'ἐβούλεσθε', 'ἐβούλοντο'] }, exp: 'Verbo deponente: su forma es medio-pasiva, pero su significado es puramente activo.' },
-            'σωζειν': { type: 'v', e: 'σῴζω', d: 'salvar', m: 'Verbo. Presente Infinitivo Activo.', p: { s: ['σῴζειν'], p: [] }, exp: 'Infinitivo objeto del verbo querer (quería salvar).' },
-            'εισεβησαν': { type: 'v', e: 'εἰσβαίνω', d: 'embarcaron', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['εἰσέβην', 'εἰσέβης', 'εἰσέβη'], p: ['εἰσέβημεν', 'εἰσέβητε', 'εἰσέβησαν'] }, exp: 'Aoristo temático indicando una acción puntual en el pasado.' },
-            'επλευσαν': { type: 'v', e: 'πλέω', d: 'navegaron', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔπλευσα', 'ἔπλευσας', 'ἔπλευσε'], p: ['ἐπλεύσαμεν', 'ἐπλεύσατε', 'ἔπλευσαν'] }, exp: 'Aoristo regular con marca sigma.' },
-            'αφικοντο': { type: 'v', e: 'ἀφικνέομαι', d: 'llegaron', m: 'Verbo contracto en ε. Aoristo Temático Indicativo Medio 3ª Plur.', formIdx: 5, p: { s: ['ἀφικόμην', 'ἀφίκου', 'ἀφίκετο'], p: ['ἀφικόμεθα', 'ἀφίκεσθε', 'ἀφίκοντο'] }, exp: 'Típicamente verbo deponente e irregular.' },
-            'ειδε': { type: 'v', e: 'ὁράω', d: 'vio', m: 'Verbo contracto en α. Aoristo Radical Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['εἶδον', 'εἶδες', 'εἶδε'], p: ['εἴδομεν', 'εἴδετε', 'εἶδον'] }, exp: 'El Aoristo utiliza una raíz totalmente distinta a la del presente (supletismo).' },
-            'ηρα': { type: 'v', e: 'ἐράω', d: 'se enamoró', m: 'Verbo contracto en α. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἤρων', 'ἤρας', 'ἤρα'], p: ['ἤρωμεν', 'ἤρατε', 'ἤρων'] }, exp: 'Rige obligatoriamente un pronombre en caso genitivo (se enamoró "de él").' },
-            'παρεσχε': { type: 'v', e: 'παρέχω', d: 'entregó', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['παρέσχον', 'παρέσχες', 'παρέσχε'], p: ['παρέσχομεν', 'παρέσχετε', 'παρέσχον'] }, exp: 'Lleva Doble Acusativo o Dativo + Acusativo.' },
-            'ειπε': { type: 'v', e: 'λέγω', d: 'dijo', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['εἶπον', 'εἶπες', 'εἶπε'], p: ['εἴπομεν', 'εἴπετε', 'εἶπον'] }, exp: 'Caso clásico de supletismo (raíz diferente a la de λέγω).' },
-            'φοβου': { type: 'v', e: 'φοβέομαι', d: 'temas', m: 'Verbo contracto en ε. Presente Imperativo Medio-Pasivo 2ª Sing.', formIdx: 1, p: { s: ['-', 'φοβοῦ', '-'], p: ['-', 'φοβεῖσθε', '-'] }, exp: 'Al ir junto al adverbio negativo μή conforma una orden de prohibición directa.' },
-            'αποκτεινε': { type: 'v', e: 'ἀποκτείνω', d: 'mata', m: 'Verbo. Presente Imperativo Activo 2ª Sing.', formIdx: 1, p: { s: ['-', 'ἀπόκτεινε', '-'], p: ['-', 'ἀποκτείνετε', '-'] }, exp: 'Mandato directo a Teseo coordinado con ἀλλά (sino que mata...).' },
-            'εγενετο': { type: 'v', e: 'γίγνομαι', d: 'se hizo', m: 'Verbo. Aoristo Temático Indicativo Medio 3ª Sing.', formIdx: 2, p: { s: ['ἐγενόμην', 'ἐγένου', 'ἐγένετο'], p: ['ἐγενόμεθα', 'ἐγένεσθε', 'ἐγένοντο'] }, exp: 'Usado frecuentemente en giros temporales impersonales.' },
-            'ηγαγον': { type: 'v', e: 'ἄγω', d: 'llevaron', m: 'Verbo. Aoristo Radical Reduplicado Indic. Activo 3ª Plur.', formIdx: 5, p: { s: ['ἤγαγον', 'ἤγαγες', 'ἤγαγε'], p: ['ἠγάγομεν', 'ἠγάγετε', 'ἤγαγον'] }, exp: 'Aoristo muy particular por repetir la consonante inicial de la raíz.' },
-            'εκλεισαν': { type: 'v', e: 'κλείω', d: 'cerraron', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔκλεισα', 'ἔκλεισας', 'ἔκλεισε'], p: ['ἐκλείσαμεν', 'ἐκλείσατε', 'ἔκλεισαν'] }, exp: 'Acción drástica y determinante para el encierro.' },
-            'εφοβειτο': { type: 'v', e: 'φοβέομαι', d: 'temía', m: 'Verbo contracto en ε. Imperf. Indicativo Medio-Pasivo 3ª Sing.', formIdx: 2, p: { s: ['ἐφοβούμην', 'ἐφοβοῦ', 'ἐφοβεῖτο'], p: ['ἐφοβούμεθα', 'ἐφοβεῖσθε', 'ἐφοβοῦντο'] }, exp: 'Contraste descriptivo ("pero Teseo no temía").' },
-            'εβρυχατο': { type: 'v', e: 'βρυχάομαι', d: 'rugía', m: 'Verbo. Imperf. Indicativo Medio-Pasivo 3ª Sing.', formIdx: 2, p: { s: ['ἐβρυχάμην', 'ἐβρυχῶ', 'ἐβρυχᾶτο'], p: ['ἐβρυχώμεθα', 'ἐβρυχᾶσθε', 'ἐβρυχῶντο'] }, exp: 'Verbo onomatopéyico y deponente para describir la bestialidad.' },
-            'ωρμησατο': { type: 'v', e: 'ὁρμάω', d: 'se lanzó', m: 'Verbo. Aoristo Sigmático Indicativo Medio 3ª Sing.', formIdx: 2, p: { s: ['ὡρμησάμην', 'ὡρμήσω', 'ὡρμήσατο'], p: ['ὡρμησάμεθα', 'ὡρμήσασθε', 'ὡρμήσαντο'] }, exp: 'Acción vigorosa y repentina de ataque.' },
-            'ελαβετο': { type: 'v', e: 'λαμβάνω', d: 'agarró', m: 'Verbo. Aoristo Temático Indicativo Medio 3ª Sing.', formIdx: 2, p: { s: ['ἐλαβόμην', 'ἐλάβου', 'ἐλάβετο'], p: ['ἐλαβόμεθα', 'ἐλάβεσθε', 'ἐλαβόντο'] }, exp: 'En voz media significa "agarrarse de algo" y requiere complemento en Genitivo (la cabeza).' },
-            'ελαβε': { type: 'v', e: 'λαμβάνω', d: 'tomó', m: 'Verbo. Aoristo Temático Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἔλαβον', 'ἔλαβες', 'ἔλαβε'], p: ['ἐλάβομεν', 'ἐλάβετε', 'ἔλαβον'] }, exp: 'Aoristo irregular de tema puro, aquí toma un Objeto Directo normal (el hilo).' },
-            'ετυψε': { type: 'v', e: 'τύπτω', d: 'golpeó', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἔτυψα', 'ἔτυψας', 'ἔτυψε'], p: ['ἐτύψαμεν', 'ἐτύψατε', 'ἔτυψαν'] }, exp: 'Acto bélico central.' },
-            'απεκτεινε': { type: 'v', e: 'ἀποκτείνω', d: 'mató', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἀπέκτεινα', 'ἀπέκτεινας', 'ἀπέκτεινε'], p: ['ἀπεκτείναμεν', 'ἀπεκτείνατε', 'ἀπέκτειναν'] }, exp: 'Resolución heroica del enfrentamiento físico.' },
-            'ηγησατο': { type: 'v', e: 'ἡγέομαι', d: 'guio', m: 'Verbo. Aoristo Sigmático Indicativo Medio 3ª Sing.', formIdx: 2, p: { s: ['ἡγησάμην', 'ἡγήσω', 'ἡγήσατο'], p: ['ἡγησάμεθα', 'ἡγήσασθε', 'ἡγήσαντο'] }, exp: 'Este verbo, al implicar guía, rige el caso Dativo (a sus compañeros).' },
-            'εξηλθον': { type: 'v', e: 'ἐξέρχομαι', d: 'salieron', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἐξῆλθον', 'ἐξῆλθες', 'ἐξῆλθε'], p: ['ἐξήλθομεν', 'ἐξήλθετε', 'ἐξῆλθον'] }, exp: 'Liberación y fin del cautiverio.' },
-            'ανεπαυσαντο': { type: 'v', e: 'ἀναπαύω', d: 'descansaron', m: 'Verbo. Aoristo Sigmático Indicativo Medio 3ª Plur.', formIdx: 5, p: { s: ['ἀνεπαυσάμην', 'ἀνεπαύσω', 'ἀνεπαύσατο'], p: ['ἀνεπαυσάμεθα', 'ἀνεπαύσασθε', 'ἀνεπαυσάντο'] }, exp: 'La voz media aquí confiere sentido reflexivo: reposaron sus propios cuerpos.' },
-            'εκαθευδον': { type: 'v', e: 'καθεύδω', d: 'dormían', m: 'Verbo. Imperf. Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἐκάθευδον', 'ἐκάθευδες', 'ἐκάθευδε'], p: ['ἐκαθεύδομεν', 'ἐκαθεύδετε', 'ἐκάθευδον'] }, exp: 'El imperfecto marca que la acción dura en el tiempo mientras otra la interrumpe.' },
-            'ηγειρε': { type: 'v', e: 'ἐγείρω', d: 'despertó', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἤγειρα', 'ἤγειρας', 'ἤγειρε'], p: ['ἠγείραμεν', 'ἠγείρατε', 'ἤγειραν'] }, exp: 'Acción puntual de interrupción del sueño ajeno.' },
-            'εστιν': { e: 'ἐστίν', d: 'es', m: 'Verbo. Presente Indicativo Activo 3ª Sing.', exp: 'El verbo copulativo fundamental.' },
-            'αποπλειν': { type: 'v', e: 'ἀποπλέω', d: 'zarpar', m: 'Verbo. Presente Infinitivo Activo.', p: { s: ['ἀποπλεῖν'], p: [] }, exp: 'Funciona como el Sujeto de la oración ("zarpar es el momento").' },
-            'ελυσαν': { type: 'v', e: 'λύω', d: 'soltaron', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔλυσα', 'ἔλυσας', 'ἔλυσε'], p: ['ἐλύσαμεν', 'ἐλύσατε', 'ἔλυσαν'] }, exp: 'Verbo paradigma modelo del griego por excelencia.' },
-            'ελιπον': { type: 'v', e: 'λείπω', d: 'abandonaron', m: 'Verbo. Aoristo Radical Temático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }, exp: 'Describe el abandono de los atenienses.' },
-            'ελιπε': { type: 'v', e: 'λείπω', d: 'abandonó', m: 'Verbo. Aoristo Radical Temático Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }, exp: 'Se usa poéticamente: "ella abandonó el sueño", es decir, despertó.' },
-            'εβοα': { type: 'v', e: 'βοάω', d: 'gritaba', m: 'Verbo contracto en α. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἐβόων', 'ἐβόας', 'ἐβόα'], p: ['ἐβοῶμεν', 'ἐβοᾶτε', 'ἐβόων'] }, exp: 'Verbo contracto que expresa una acción durativa de angustia.' },
-            'κατελιπεσ': { type: 'v', e: 'καταλείπω', d: 'abandonaste', m: 'Verbo. Aoristo Radical Temático Indicativo Activo 2ª Sing.', formIdx: 1, p: { s: ['κατέλιπον', 'κατέλιπες', 'κατέλιπε'], p: ['κατελίπομεν', 'κατελίπετε', 'κατέλιπον'] }, exp: 'Cierre dramático con verbo compuesto indicando abandono total.' }
+            // Verbos (Con Voces y Explicaciones, Infinitivos unificados)
+            'εβασιλευε': { type: 'v', e: 'βασιλεύω', d: 'reinaba', m: 'Voz Activa. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἐβασίλευον', 'ἐβασίλευες', 'ἐβασίλευε'], p: ['ἐβασιλεύομεν', 'ἐβασιλεύετε', 'ἐβασίλευον'] }, exp: 'Describe una acción continua en el pasado.' },
+            'ηναγκαζε': { type: 'v', e: 'ἀναγκάζω', d: 'obligaba', m: 'Voz Activa. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἠνάγκαζον', 'ἠνάγκαζες', 'ἠνάγκαζε'], p: ['ἠναγκάζομεν', 'ἠναγκάζετε', 'ἠνάγκαζον'] }, exp: 'Verbo principal que rige una subordinada sustantiva de infinitivo.' },
+            'παρεχειν': { type: 'v', e: 'παρέχω', d: 'entregar', m: 'Voz Activa. Pres. Infinitivo.', p: { s: ['παρέχειν'], p: [] }, exp: 'Infinitivo que completa el sentido del verbo "obligaba".' },
+            'εσθιειν': { type: 'v', e: 'ἐσθίω', d: 'comer', m: 'Voz Activa. Pres. Infinitivo.', p: { s: ['ἐσθίειν'], p: [] }, exp: 'Infinitivo usado con valor de propósito o finalidad.' },
+            'ωκτιρε': { type: 'v', e: 'οἰκτίρω', d: 'sintió piedad', m: 'Voz Activa. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ᾤκτιρον', 'ᾤκτιρες', 'ᾤκτιρε'], p: ['ᾠκτίρομεν', 'ᾠκτίρετε', 'ᾤκτιρον'] }, exp: 'El verbo presenta un aumento irregular en diptongo.' },
+            'εβουλετο': { type: 'v', e: 'βούλομαι', d: 'quería', m: 'Voz Medio-Pasiva. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἐβουλόμην', 'ἐβούλου', 'ἐβούλετο'], p: ['ἐβουλόμεθα', 'ἐβούλεσθε', 'ἐβούλοντο'] }, exp: 'Verbo deponente: su forma es medio-pasiva, pero su significado es puramente activo.' },
+            'σωζειν': { type: 'v', e: 'σῴζω', d: 'salvar', m: 'Voz Activa. Pres. Infinitivo.', p: { s: ['σῴζειν'], p: [] }, exp: 'Infinitivo objeto del verbo querer (quería salvar).' },
+            'εισεβησαν': { type: 'v', e: 'εἰσβαίνω', d: 'embarcaron', m: 'Voz Activa. Aoristo Radical Ind. 3ª Pl.', formIdx: 5, p: { s: ['εἰσέβην', 'εἰσέβης', 'εἰσέβη'], p: ['εἰσέβημεν', 'εἰσέβητε', 'εἰσέβησαν'] }, exp: 'Aoristo temático indicando una acción puntual en el pasado.' },
+            'επλευσαν': { type: 'v', e: 'πλέω', d: 'navegaron', m: 'Voz Activa. Aoristo Sigmático Ind. 3ª Pl.', formIdx: 5, p: { s: ['ἔπλευσα', 'ἔπλευσας', 'ἔπλευσε'], p: ['ἐπλεύσαμεν', 'ἐπλεύσατε', 'ἐπλεύσαν'] }, exp: 'Aoristo regular con marca sigma.' },
+            'αφικοντο': { type: 'v', e: 'ἀφικνέομαι', d: 'llegaron', m: 'Voz Media. Aoristo Temático Ind. 3ª Pl.', formIdx: 5, p: { s: ['ἀφικόμην', 'ἀφίκου', 'ἀφίκετο'], p: ['ἀφικόμεθα', 'ἀφίκεσθε', 'ἀφίκοντο'] }, exp: 'Típicamente verbo deponente e irregular.' },
+            'ειδε': { type: 'v', e: 'ὁράω', d: 'vio', m: 'Voz Activa. Aoristo Radical Ind. 3ª Sg.', formIdx: 2, p: { s: ['εἶδον', 'εἶδες', 'εἶδε'], p: ['εἴδομεν', 'εἴδετε', 'εἶδον'] }, exp: 'El Aoristo utiliza una raíz totalmente distinta a la del presente.' },
+            'ηρα': { type: 'v', e: 'ἐράω', d: 'se enamoró', m: 'Voz Activa. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἤρων', 'ἤρας', 'ἤρα'], p: ['ἤρωμεν', 'ἤρατε', 'ἤρων'] }, exp: 'Rige obligatoriamente un pronombre en caso genitivo.' },
+            'παρεσχε': { type: 'v', e: 'παρέχω', d: 'entregó', m: 'Voz Activa. Aoristo Radical Ind. 3ª Sg.', formIdx: 2, p: { s: ['παρέσχον', 'παρέσχες', 'παρέσχε'], p: ['παρέσχομεν', 'παρέσχετε', 'παρέσχον'] }, exp: 'Lleva Doble Acusativo o Dativo + Acusativo.' },
+            'ειπε': { type: 'v', e: 'λέγω', d: 'dijo', m: 'Voz Activa. Aoristo Radical Ind. 3ª Sg.', formIdx: 2, p: { s: ['εἶπον', 'εἶπες', 'εἶπε'], p: ['εἴπομεν', 'εἴπετε', 'εἶπον'] }, exp: 'Caso clásico de supletismo (raíz diferente a la de λέγω).' },
+            'φοβου': { type: 'v', e: 'φοβέομαι', d: 'temas', m: 'Voz Medio-Pasiva. Pres. Imperativo 2ª Sg.', formIdx: 1, p: { s: ['-', 'φοβοῦ', '-'], p: ['-', 'φοβεῖσθε', '-'] }, exp: 'Al ir junto al adverbio negativo μή conforma una orden de prohibición.' },
+            'αποκτεινε': { type: 'v', e: 'ἀποκτείνω', d: 'mata', m: 'Voz Activa. Pres. Imperativo 2ª Sg.', formIdx: 1, p: { s: ['-', 'ἀπόκτεινε', '-'], p: ['-', 'ἀποκτείνετε', '-'] }, exp: 'Mandato directo a Teseo coordinado con ἀλλά.' },
+            'εγενετο': { type: 'v', e: 'γίγνομαι', d: 'se hizo', m: 'Voz Media. Aoristo Temático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἐγενόμην', 'ἐγένου', 'ἐγένετο'], p: ['ἐγενόμεθα', 'ἐγένεσθε', 'ἐγένοντο'] }, exp: 'Usado frecuentemente en giros temporales impersonales.' },
+            'ηγαγον': { type: 'v', e: 'ἄγω', d: 'llevaron', m: 'Voz Activa. Aor. Radical Reduplicado 3ª Pl.', formIdx: 5, p: { s: ['ἤγαγον', 'ἤγαγες', 'ἤγαγε'], p: ['ἠγάγομεν', 'ἠγάγετε', 'ἤγαγον'] }, exp: 'Aoristo muy particular por repetir la consonante inicial.' },
+            'εκλεισαν': { type: 'v', e: 'κλείω', d: 'cerraron', m: 'Voz Activa. Aoristo Sigmático Ind. 3ª Pl.', formIdx: 5, p: { s: ['ἔκλεισα', 'ἔκλεισας', 'ἔκλεισε'], p: ['ἐκλείσαμεν', 'ἐκλείσατε', 'ἔκλεισαν'] }, exp: 'Acción drástica y determinante para el encierro.' },
+            'εφοβειτο': { type: 'v', e: 'φοβέομαι', d: 'temía', m: 'Voz Medio-Pasiva. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἐφοβούμην', 'ἐφοβοῦ', 'ἐφοβεῖτο'], p: ['ἐφοβούμεθα', 'ἐφοβεῖσθε', 'ἐφοβοῦντο'] }, exp: 'Contraste descriptivo ("pero Teseo no temía").' },
+            'εβρυχατο': { type: 'v', e: 'βρυχάομαι', d: 'rugía', m: 'Voz Medio-Pasiva. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἐβρυχάμην', 'ἐβρυχῶ', 'ἐβρυχᾶτο'], p: ['ἐβρυχώμεθα', 'ἐβρυχᾶσθε', 'ἐβρυχῶντο'] }, exp: 'Verbo onomatopéyico y deponente para describir la bestialidad.' },
+            'ωρμησατο': { type: 'v', e: 'ὁρμάω', d: 'se lanzó', m: 'Voz Media. Aoristo Sigmático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ὡρμησάμην', 'ὡρμήσω', 'ὡρμήσατο'], p: ['ὡρμησάμεθα', 'ὡρμήσασθε', 'ὡρμήσαντο'] }, exp: 'Acción vigorosa y repentina de ataque.' },
+            'ελαβετο': { type: 'v', e: 'λαμβάνω', d: 'agarró', m: 'Voz Media. Aoristo Temático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἐλαβόμην', 'ἐλάβου', 'ἐλάβετο'], p: ['ἐλαβόμεθα', 'ἐλάβεσθε', 'ἐλαβόντο'] }, exp: 'En voz media significa "agarrarse de algo" y requiere Genitivo.' },
+            'ελαβε': { type: 'v', e: 'λαμβάνω', d: 'tomó', m: 'Voz Activa. Aoristo Temático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἔλαβον', 'ἔλαβες', 'ἔλαβε'], p: ['ἐλάβομεν', 'ἐλάβετε', 'ἔλαβον'] }, exp: 'Aoristo irregular de tema puro, aquí toma un Objeto Directo normal.' },
+            'ετυψε': { type: 'v', e: 'τύπτω', d: 'golpeó', m: 'Voz Activa. Aoristo Sigmático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἔτυψα', 'ἔτυψας', 'ἔτυψε'], p: ['ἐτύψαμεν', 'ἐτύψατε', 'ἔτυψαν'] }, exp: 'Acto bélico central.' },
+            'απεκτεινε': { type: 'v', e: 'ἀποκτείνω', d: 'mató', m: 'Voz Activa. Aoristo Sigmático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἀπέκτεινα', 'ἀπέκτεινας', 'ἀπέκτεινε'], p: ['ἀπεκτείναμεν', 'ἀπεκτείνατε', 'ἀπέκτειναν'] }, exp: 'Resolución heroica del enfrentamiento físico.' },
+            'ηγησατο': { type: 'v', e: 'ἡγέομαι', d: 'guio', m: 'Voz Media. Aoristo Sigmático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἡγησάμην', 'ἡγήσω', 'ἡγήσατο'], p: ['ἡγησάμεθα', 'ἡγήσασθε', 'ἡγήσαντο'] }, exp: 'Este verbo, al implicar guía, rige el caso Dativo (a sus compañeros).' },
+            'εξηλθον': { type: 'v', e: 'ἐξέρχομαι', d: 'salieron', m: 'Voz Activa. Aoristo Radical Ind. 3ª Pl.', formIdx: 5, p: { s: ['ἐξῆλθον', 'ἐξῆλθες', 'ἐξῆλθε'], p: ['ἐξήλθομεν', 'ἐξήλθετε', 'ἐξῆλθον'] }, exp: 'Liberación y fin del cautiverio.' },
+            'ανεπαυσαντο': { type: 'v', e: 'ἀναπαύω', d: 'descansaron', m: 'Voz Media. Aoristo Sigmático Ind. 3ª Pl.', formIdx: 5, p: { s: ['ἀνεπαυσάμην', 'ἀνεπαύσω', 'ἀνεπαύσατο'], p: ['ἀνεπαυσάμεθα', 'ἀνεπαύσασθε', 'ἀνεπαυσάντο'] }, exp: 'La voz media aquí confiere sentido reflexivo.' },
+            'εκαθευδον': { type: 'v', e: 'καθεύδω', d: 'dormían', m: 'Voz Activa. Imperf. Ind. 3ª Pl.', formIdx: 5, p: { s: ['ἐκάθευδον', 'ἐκάθευδες', 'ἐκάθευδε'], p: ['ἐκαθεύδομεν', 'ἐκαθεύδετε', 'ἐκάθευδον'] }, exp: 'El imperfecto marca que la acción dura en el tiempo mientras otra la interrumpe.' },
+            'ηγειρε': { type: 'v', e: 'ἐγείρω', d: 'despertó', m: 'Voz Activa. Aoristo Sigmático Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἤγειρα', 'ἤγειρας', 'ἤγειρε'], p: ['ἠγείραμεν', 'ἠγείρατε', 'ἤγειραν'] }, exp: 'Acción puntual de interrupción del sueño ajeno.' },
+            'εστιν': { e: 'ἐστίν', d: 'es', m: 'Voz Activa. Presente Ind. 3ª Sg.', exp: 'El verbo copulativo fundamental.' },
+            'αποπλειν': { type: 'v', e: 'ἀποπλέω', d: 'zarpar', m: 'Voz Activa. Pres. Infinitivo.', p: { s: ['ἀποπλεῖν'], p: [] }, exp: 'Funciona como el Sujeto de la oración.' },
+            'ελυσαν': { type: 'v', e: 'λύω', d: 'soltaron', m: 'Voz Activa. Aoristo Sigmático Ind. 3ª Pl.', formIdx: 5, p: { s: ['ἔλυσα', 'ἔλυσας', 'ἔλυσε'], p: ['ἐλύσαμεν', 'ἐλύσατε', 'ἔλυσαν'] }, exp: 'Verbo paradigma modelo del griego por excelencia.' },
+            'ελιπον': { type: 'v', e: 'λείπω', d: 'abandonaron', m: 'Voz Activa. Aor. Radical Temático 3ª Pl.', formIdx: 5, p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }, exp: 'Describe el abandono de los atenienses.' },
+            'ελιπε': { type: 'v', e: 'λείπω', d: 'abandonó', m: 'Voz Activa. Aor. Radical Temático 3ª Sg.', formIdx: 2, p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }, exp: 'Se usa poéticamente: "ella abandonó el sueño", es decir, despertó.' },
+            'εβοα': { type: 'v', e: 'βοάω', d: 'gritaba', m: 'Voz Activa. Imperf. Ind. 3ª Sg.', formIdx: 2, p: { s: ['ἐβόων', 'ἐβόας', 'ἐβόα'], p: ['ἐβοῶμεν', 'ἐβοᾶτε', 'ἐβόων'] }, exp: 'Verbo contracto que expresa una acción durativa de angustia.' },
+            'κατελιπεσ': { type: 'v', e: 'καταλείπω', d: 'abandonaste', m: 'Voz Activa. Aor. Radical Temático 2ª Sg.', formIdx: 1, p: { s: ['κατέλιπον', 'κατέλιπες', 'κατέλιπε'], p: ['κατελίπομεν', 'κατελίπετε', 'κατέλιπον'] }, exp: 'Cierre dramático con verbo compuesto indicando abandono total.' }
         };
 
-        // --- MOTOR DEL JUEGO ---
         let activeTeam = "";
         let timerInterval;
         let timeRemaining = 3300; 
@@ -532,17 +506,21 @@
 
         window.onload = () => { 
             lucide.createIcons(); 
-            initDust(); // Iniciar efecto del polvo mítico
-            
-            // Soporte tecla Enter
-            document.getElementById('teamName').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') startGame();
+            initDust(); 
+            document.getElementById('teamName').addEventListener('keypress', function (e) { 
+                if (e.key === 'Enter') startGame(); 
             });
         };
 
-        function normalize(str) {
-            if (!str) return "";
-            return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/ς/g, "σ").replace(/[^α-ω]/g, "");
+        function playScroll() { 
+            const snd = document.getElementById('scrollSound'); 
+            snd.volume = 0.1; 
+            snd.currentTime = 0; 
+            snd.play().catch(()=>{}); 
+        }
+
+        function normalize(str) { 
+            return str ? str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/ς/g, "σ").replace(/[^α-ω]/g, "") : ""; 
         }
 
         function showDivineToast(msg, isSuccess = true) {
@@ -559,26 +537,34 @@
 
         function startGame() {
             const name = document.getElementById('teamName').value.trim();
-            if (!name) return showDivineToast("Identificaos ante el Oráculo.", false);
+            if (!name) { showDivineToast("Identificaos ante el Oráculo.", false); return; }
             activeTeam = name;
+            
             document.getElementById('displayTeamName').innerText = activeTeam;
             document.getElementById('introStage').classList.add('hidden-stage');
             document.getElementById('gameHeader').classList.remove('hidden-stage');
             document.getElementById('gameStage').classList.remove('hidden-stage');
             
-            // Ajustar volumen para no asustar al jugador
             const music = document.getElementById('bgMusic');
-            music.volume = 0.2;
-            music.play().catch(e => console.log("Audio play prevented by browser"));
+            music.volume = 0.2; 
+            music.play().catch(e => {});
 
             injectTexts();
+
             timerInterval = setInterval(() => {
                 timeRemaining--;
-                const m = Math.floor(timeRemaining / 60);
-                const s = timeRemaining % 60;
+                if (timeRemaining < 0) { endGame(false); return; }
+                let m = Math.floor(timeRemaining / 60);
+                let s = timeRemaining % 60;
                 document.getElementById('timerDisplay').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                if (timeRemaining <= 0) endGame(false);
+                
+                if (timeRemaining < 300) { 
+                    const tDisp = document.getElementById('timerDisplay');
+                    tDisp.classList.add('animate-pulse', 'text-red-600'); 
+                    tDisp.style.textShadow = "0 0 20px #ef4444";
+                }
             }, 1000);
+            
             showDivineToast("Atenea os guía. ¡Suerte!");
         }
 
@@ -586,45 +572,30 @@
             for (let i = 1; i <= 3; i++) {
                 const container = document.getElementById(`greek-container-${i}`);
                 if (container) {
-                    const text = texts[i-1];
-                    // Divide manteniendo puntuación separada (Mejora visual)
-                    const parts = text.split(/([.,·;;·\s]+)/);
-                    let html = '';
-                    parts.forEach(part => {
-                        if (!part) return;
-                        if (/^[.,·;;·\s]+$/.test(part)) {
-                            html += part;
-                        } else {
-                            const clean = normalize(part);
-                            html += `<span class="word-token" onclick="analyze('${clean}', '${part}', this)">${part}</span>`;
-                        }
-                    });
-                    container.innerHTML = html;
+                    container.innerHTML = texts[i-1].split(/([.,·;;·\s]+)/).map(part => {
+                        if (!part || /^[.,·;;·\s]+$/.test(part)) return part;
+                        const clean = normalize(part);
+                        return `<span class="word-token" onmouseover="playScroll()" onclick="analyze('${clean}', '${part}', this)">${part}</span>`;
+                    }).join("");
                 }
             }
         }
 
         function analyze(key, original, elementNode) {
-            // Manejo de clase activa visual
-            if (currentActiveWord) {
-                currentActiveWord.classList.remove('word-active');
-            }
-            if (elementNode) {
-                elementNode.classList.add('word-active');
-                currentActiveWord = elementNode;
-            }
+            if (currentActiveWord) currentActiveWord.classList.remove('word-active');
+            elementNode.classList.add('word-active');
+            currentActiveWord = elementNode;
 
-            // Reproductor de audio de síntesis para griego
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(original);
-                utterance.lang = 'el-GR';
-                utterance.rate = 0.85;
-                window.speechSynthesis.speak(utterance);
+                const u = new SpeechSynthesisUtterance(original); 
+                u.lang = 'el-GR'; u.rate = 0.85; 
+                window.speechSynthesis.speak(u);
             }
 
             const data = dict[key];
             const content = document.getElementById('oracle-content');
+            
             if (!data) {
                 content.innerHTML = `<div class="bg-slate-900 p-10 rounded-3xl"><p class="text-red-400 font-bold">El Oráculo guarda silencio para "${original}". (Raíz no indexada: ${key})</p></div>`;
             } else {
@@ -642,7 +613,7 @@
 
                 if (data.exp) {
                     html += `
-                    <div class="explanation-box fade-in">
+                    <div class="explanation-box fade-in mt-6">
                         <span class="explanation-title">Nota del Oráculo (Sintaxis y Origen)</span>
                         <p class="explanation-text">${data.exp}</p>
                     </div>`;
@@ -653,15 +624,17 @@
                     const isInf = data.type === 'v' && data.p.s.length === 1;
                     const usedIdx = data.formIdx;
                     
-                    html += `<h5 class="paradigm-title mt-12"><i data-lucide="book-open"></i> Cuadro de Flexión</h5>
+                    html += `<h5 class="paradigm-title mt-12"><i data-lucide="book-open" class="w-5 h-5"></i> Cuadro de Flexión</h5>
                             <table class="oracle-table">`;
                     
-                    // Si es infinitivo, mostramos una tabla sin personas
                     if (isInf) {
-                        html += `<thead><tr><th>Forma Nominal</th><th>Desinencia</th></tr></thead>
-                                 <tbody><tr><td>Infinitivo</td><td class="highlight-form">${data.p.s[0]}</td></tr></tbody></table>`;
+                        html += `<thead><tr><th>Categoría</th><th>Forma</th></tr></thead>
+                                 <tbody>
+                                    <tr><td>Voz / Tiempo</td><td class="text-sky-400">Presente Activo</td></tr>
+                                    <tr><td>Forma Nominal</td><td class="highlight-form">${data.p.s[0]}</td></tr>
+                                 </tbody></table>
+                                 <p class="text-xs text-slate-400 mt-2 italic">Nota: Los infinitivos no tienen persona ni número.</p>`;
                     } else {
-                        // Si no, mostramos la tabla normal de flexiones
                         html += `<thead><tr><th>${isNoun ? 'Caso' : 'Pers.'}</th><th>Singular</th><th>Plural</th></tr></thead>
                                  <tbody>`;
                         
@@ -679,9 +652,9 @@
                     }
                 }
                 content.innerHTML = html;
+                lucide.createIcons();
             }
             document.getElementById('oracle-drawer').classList.remove('translate-x-full');
-            lucide.createIcons();
         }
 
         function validateBlock1() {
@@ -716,13 +689,15 @@
             } else fail('block3');
         }
 
-        function addPoints(p) { points += p; document.getElementById('gloryPoints').innerText = points; }
+        function addPoints(p) { 
+            points += p; 
+            document.getElementById('gloryPoints').innerText = points; 
+        }
 
         function nextLevel(num) {
             const snd = document.getElementById('successSound');
             snd.volume = 0.5; snd.play().catch(e => {});
             
-            // Efecto flash divino
             document.body.classList.add('flash-gold');
             setTimeout(() => document.body.classList.remove('flash-gold'), 800);
 
@@ -752,13 +727,14 @@
             document.getElementById('gameStage').classList.add('hidden-stage');
             document.getElementById('gameHeader').classList.add('hidden-stage');
             document.getElementById('endStage').classList.remove('hidden-stage');
+            
             if (victory) {
                 document.getElementById('threadBar').style.width = '100%';
                 document.getElementById('endText').innerText = `¡Gloria a ${activeTeam}! Habéis escapado con ${points} puntos de KLEOS. Vuestro nombre será eterno en el Ágora.`;
             } else {
                 document.getElementById('endEmoji').innerText = "💀";
                 document.getElementById('endTitle').innerText = "ATRAPADOS";
-                document.getElementById('endText').innerText = "El laberinto os ha consumido.";
+                document.getElementById('endText').innerText = "El laberinto os ha consumido. El tiempo se agotó.";
             }
         }
     </script>
