@@ -97,9 +97,19 @@
         #divine-toast.show { transform: translateX(-50%) translateY(0); }
 
         .translation-reveal { background: rgba(14, 165, 233, 0.05); border: 1px dashed var(--sky); color: #7dd3fc; padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; font-style: italic; line-height: 1.8; animation: fadeIn 1s; }
+
+        /* NUEVO: Efecto Premium Flash Divino */
+        @keyframes divineFlash {
+            0% { background-color: rgba(251, 191, 36, 0.25); }
+            100% { background-color: transparent; }
+        }
+        .flash-gold { animation: divineFlash 0.8s ease-out; }
     </style>
 </head>
 <body class="p-4 md:p-8 flex flex-col items-center">
+
+    <!-- NUEVO: Polvo Mítico en el fondo (Premium) -->
+    <canvas id="divineDust" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1;"></canvas>
 
     <div id="threadBar" class="ariadne-thread" style="width: 0%"></div>
 
@@ -329,6 +339,60 @@
     </div>
 
     <script>
+        // --- NUEVO: SISTEMA PREMIUM DE POLVO DIVINO ---
+        const canvas = document.getElementById('divineDust');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        
+        function initDust() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particlesArray = [];
+            for (let i = 0; i < 70; i++) {
+                particlesArray.push(new Particle());
+            }
+            animateDust();
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedY = Math.random() * 0.4 + 0.1;
+                this.opacity = Math.random() * 0.4 + 0.1;
+            }
+            update() {
+                this.y -= this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(251, 191, 36, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function animateDust() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateDust);
+        }
+        
+        window.addEventListener('resize', () => {
+            if(canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+
         // --- BASE DE DATOS DE TEXTOS ---
         const texts = [
             "ὁ μὲν Μίνως ἐν τῇ Κρήτῃ ἐβασίλευε καὶ τοὺς Ἀθηναίους ἠνάγκαζε παρέχειν ἑπτὰ νεανίας καὶ ἑπτὰ παρθένους τῷ Μινωταύρῳ ἐσθίειν. ὁ δὲ Θησεὺς τοὺς ἑταίρους ᾤκτιρε καὶ ἐβούλετο σῴζειν. εἰς οὖν τὴν ναῦν εἰσέβησαν καὶ ἔπλευσαν πρὸς τὴν Κρήτην. ἐπεὶ δὲ ἀφίκοντο, ἡ Ἀριάδνη εἶδε τὸν Θησέα καὶ ἤρα αὐτοῦ. ἐν δὲ τῇ νυκτὶ τὸ ξίφος καὶ τὸ λίνον παρέσχε καὶ εἶπε· μὴ φοβοῦ, ἀλλὰ ἀπόκτεινε τὸ τέρας.",
@@ -338,21 +402,22 @@
 
         // --- DICCIONARIO MAESTRO OMNISCIENTE ---
         const dict = {
-            // Artículos y Partículas
-            'ο': { e: 'ὁ', d: 'el', m: 'Artículo. Nom. Sg. Masc.', exp: 'Funciona como actualizador del Sujeto principal.' },
-            'η': { e: 'ἡ', d: 'la', m: 'Artículo. Nom. Sg. Fem.', exp: 'Funciona como actualizador del Sujeto femenino.' },
-            'το': { e: 'τὸ', d: 'el, lo', m: 'Artículo. Nom/Acus. Sg. Neutro.', exp: 'Determina objetos neutros, en este caso como Objeto Directo.' },
-            'του': { e: 'τοῦ', d: 'del', m: 'Artículo. Gen. Sg. Masc.', exp: 'Indica posesión o complemento del nombre.' },
-            'τον': { e: 'τὸν', d: 'al / el', m: 'Artículo. Acus. Sg. Masc.', exp: 'Determina al Objeto Directo.' },
-            'την': { e: 'τὴν', d: 'la', m: 'Artículo. Acus. Sg. Fem.', exp: 'Determina al Objeto Directo femenino.' },
-            'τη': { e: 'τῇ', d: 'la', m: 'Artículo. Dat. Sg. Fem.', exp: 'Complemento Circunstancial regido por la preposición ἐν.' },
-            'τησ': { e: 'τῆς', d: 'de la', m: 'Artículo. Gen. Sg. Fem.', exp: 'Indica posesión o rige verbos de tacto/aprensión.' },
-            'τω': { e: 'τῷ', d: 'al', m: 'Artículo. Dat. Sg. Masc.', exp: 'Marca el Complemento Indirecto.' },
-            'τουσ': { e: 'τοὺς', d: 'los', m: 'Artículo. Acus. Pl. Masc.', exp: 'Acompaña al Objeto Directo en plural.' },
-            'τασ': { e: 'τὰς', d: 'las', m: 'Artículo. Acus. Pl. Fem.', exp: 'Acompaña al Objeto Directo femenino plural.' },
-            'τα': { e: 'τὰ', d: 'los / las', m: 'Artículo. Nom/Acus. Pl. Neutro.', exp: 'Determina sustantivos neutros en plural.' },
-            'τοισ': { e: 'τοῖς', d: 'para los / a los', m: 'Artículo. Dat. Pl. Masc.', exp: 'Acompaña al Complemento Indirecto en plural.' },
-            'οι': { e: 'οἱ', d: 'los', m: 'Artículo. Nom. Pl. Masc.', exp: 'Acompaña al Sujeto en plural.' },
+            // Artículos y Partículas (AÑADIDOS PARADIGMAS A LOS ARTÍCULOS)
+            'ο': { type: 'n', e: 'ὁ', d: 'el', m: 'Artículo. Nom. Sg. Masc.', formIdx: 0, p: { s: ['ὁ', '-', 'τὸν', 'τοῦ', 'τῷ'], p: ['οἱ', '-', 'τοὺς', 'τῶν', 'τοῖς'] }, exp: 'Funciona como actualizador del Sujeto principal.' },
+            'η': { type: 'n', e: 'ἡ', d: 'la', m: 'Artículo. Nom. Sg. Fem.', formIdx: 0, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Funciona como actualizador del Sujeto femenino.' },
+            'το': { type: 'n', e: 'τὸ', d: 'el, lo', m: 'Artículo. Nom/Acus. Sg. Neutro.', formIdx: 2, p: { s: ['τὸ', '-', 'τὸ', 'τοῦ', 'τῷ'], p: ['τὰ', '-', 'τὰ', 'τῶν', 'τοῖς'] }, exp: 'Determina objetos neutros, en este caso como Objeto Directo.' },
+            'του': { type: 'n', e: 'τοῦ', d: 'del', m: 'Artículo. Gen. Sg. Masc.', formIdx: 3, p: { s: ['ὁ/τὸ', '-', 'τὸν/τὸ', 'τοῦ', 'τῷ'], p: ['οἱ/τὰ', '-', 'τοὺς/τὰ', 'τῶν', 'τοῖς'] }, exp: 'Indica posesión o complemento del nombre.' },
+            'τον': { type: 'n', e: 'τὸν', d: 'al / el', m: 'Artículo. Acus. Sg. Masc.', formIdx: 2, p: { s: ['ὁ', '-', 'τὸν', 'τοῦ', 'τῷ'], p: ['οἱ', '-', 'τοὺς', 'τῶν', 'τοῖς'] }, exp: 'Determina al Objeto Directo.' },
+            'την': { type: 'n', e: 'τὴν', d: 'la', m: 'Artículo. Acus. Sg. Fem.', formIdx: 2, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Determina al Objeto Directo femenino.' },
+            'τη': { type: 'n', e: 'τῇ', d: 'la', m: 'Artículo. Dat. Sg. Fem.', formIdx: 4, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Complemento Circunstancial regido por la preposición ἐν.' },
+            'τησ': { type: 'n', e: 'τῆς', d: 'de la', m: 'Artículo. Gen. Sg. Fem.', formIdx: 3, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Indica posesión o rige verbos de tacto/aprensión.' },
+            'τω': { type: 'n', e: 'τῷ', d: 'al', m: 'Artículo. Dat. Sg. Masc.', formIdx: 4, p: { s: ['ὁ/τὸ', '-', 'τὸν/τὸ', 'τοῦ', 'τῷ'], p: ['οἱ/τὰ', '-', 'τοὺς/τὰ', 'τῶν', 'τοῖς'] }, exp: 'Marca el Complemento Indirecto.' },
+            'τουσ': { type: 'n', e: 'τοὺς', d: 'los', m: 'Artículo. Acus. Pl. Masc.', formIdx: 7, p: { s: ['ὁ', '-', 'τὸν', 'τοῦ', 'τῷ'], p: ['οἱ', '-', 'τοὺς', 'τῶν', 'τοῖς'] }, exp: 'Acompaña al Objeto Directo en plural.' },
+            'τασ': { type: 'n', e: 'τὰς', d: 'las', m: 'Artículo. Acus. Pl. Fem.', formIdx: 7, p: { s: ['ἡ', '-', 'τὴν', 'τῆς', 'τῇ'], p: ['αἱ', '-', 'τὰς', 'τῶν', 'ταῖς'] }, exp: 'Acompaña al Objeto Directo femenino plural.' },
+            'τα': { type: 'n', e: 'τὰ', d: 'los / las', m: 'Artículo. Nom/Acus. Pl. Neutro.', formIdx: 7, p: { s: ['τὸ', '-', 'τὸ', 'τοῦ', 'τῷ'], p: ['τὰ', '-', 'τὰ', 'τῶν', 'τοῖς'] }, exp: 'Determina sustantivos neutros en plural.' },
+            'τοισ': { type: 'n', e: 'τοῖς', d: 'para los / a los', m: 'Artículo. Dat. Pl. Masc.', formIdx: 9, p: { s: ['ὁ/τὸ', '-', 'τὸν/τὸ', 'τοῦ', 'τῷ'], p: ['οἱ/τὰ', '-', 'τοὺς/τὰ', 'τῶν', 'τοῖς'] }, exp: 'Acompaña al Complemento Indirecto en plural.' },
+            'οι': { type: 'n', e: 'οἱ', d: 'los', m: 'Artículo. Nom. Pl. Masc.', formIdx: 5, p: { s: ['ὁ', '-', 'τὸν', 'τοῦ', 'τῷ'], p: ['οἱ', '-', 'τοὺς', 'τῶν', 'τοῖς'] }, exp: 'Acompaña al Sujeto en plural.' },
+            
             'μεν': { e: 'μέν', d: 'por una parte', m: 'Partícula coordinante.', exp: 'Prepara un contraste inminente, suele ir seguida de δέ ("por una parte... por otra").' },
             'δε': { e: 'δέ', d: 'pero, y', m: 'Partícula coordinante.', exp: 'Enlace principal narrativo; puede ser copulativo o adversativo.' },
             'και': { e: 'καί', d: 'y', m: 'Conjunción copulativa.', exp: 'Une elementos del mismo nivel sintáctico.' },
@@ -427,17 +492,17 @@
             'σωζειν': { type: 'v', e: 'σῴζω', d: 'salvar', m: 'Verbo. Presente Infinitivo Activo.', p: { s: ['σῴζειν'], p: [] }, exp: 'Infinitivo objeto del verbo querer (quería salvar).' },
             'εισεβησαν': { type: 'v', e: 'εἰσβαίνω', d: 'embarcaron', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['εἰσέβην', 'εἰσέβης', 'εἰσέβη'], p: ['εἰσέβημεν', 'εἰσέβητε', 'εἰσέβησαν'] }, exp: 'Aoristo temático indicando una acción puntual en el pasado.' },
             'επλευσαν': { type: 'v', e: 'πλέω', d: 'navegaron', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔπλευσα', 'ἔπλευσας', 'ἔπλευσε'], p: ['ἐπλεύσαμεν', 'ἐπλεύσατε', 'ἔπλευσαν'] }, exp: 'Aoristo regular con marca sigma.' },
-            'αφικοντο': { type: 'v', e: 'ἀφικνέομαι', d: 'llegaron', m: 'Verbo. Aoristo Temático Indicativo Medio 3ª Plur.', formIdx: 5, p: { s: ['ἀφικόμην', 'ἀφίκου', 'ἀφίκετο'], p: ['ἀφικόμεθα', 'ἀφίκεσθε', 'ἀφίκοντο'] }, exp: 'Típicamente verbo deponente e irregular.' },
-            'ειδε': { type: 'v', e: 'ὁράω', d: 'vio', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['εἶδον', 'εἶδες', 'εἶδε'], p: ['εἴδομεν', 'εἴδετε', 'εἶδον'] }, exp: 'El Aoristo utiliza una raíz totalmente distinta a la del presente (supletismo).' },
-            'ηρα': { type: 'v', e: 'ἐράω', d: 'se enamoró', m: 'Verbo. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἤρων', 'ἤρας', 'ἤρα'], p: ['ἤρωμεν', 'ἤρατε', 'ἤρων'] }, exp: 'Rige obligatoriamente un pronombre en caso genitivo (se enamoró "de él").' },
+            'αφικοντο': { type: 'v', e: 'ἀφικνέομαι', d: 'llegaron', m: 'Verbo contracto en ε. Aoristo Temático Indicativo Medio 3ª Plur.', formIdx: 5, p: { s: ['ἀφικόμην', 'ἀφίκου', 'ἀφίκετο'], p: ['ἀφικόμεθα', 'ἀφίκεσθε', 'ἀφίκοντο'] }, exp: 'Típicamente verbo deponente e irregular.' },
+            'ειδε': { type: 'v', e: 'ὁράω', d: 'vio', m: 'Verbo contracto en α. Aoristo Radical Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['εἶδον', 'εἶδες', 'εἶδε'], p: ['εἴδομεν', 'εἴδετε', 'εἶδον'] }, exp: 'El Aoristo utiliza una raíz totalmente distinta a la del presente (supletismo).' },
+            'ηρα': { type: 'v', e: 'ἐράω', d: 'se enamoró', m: 'Verbo contracto en α. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἤρων', 'ἤρας', 'ἤρα'], p: ['ἤρωμεν', 'ἤρατε', 'ἤρων'] }, exp: 'Rige obligatoriamente un pronombre en caso genitivo (se enamoró "de él").' },
             'παρεσχε': { type: 'v', e: 'παρέχω', d: 'entregó', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['παρέσχον', 'παρέσχες', 'παρέσχε'], p: ['παρέσχομεν', 'παρέσχετε', 'παρέσχον'] }, exp: 'Lleva Doble Acusativo o Dativo + Acusativo.' },
             'ειπε': { type: 'v', e: 'λέγω', d: 'dijo', m: 'Verbo. Aoristo Radical Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['εἶπον', 'εἶπες', 'εἶπε'], p: ['εἴπομεν', 'εἴπετε', 'εἶπον'] }, exp: 'Caso clásico de supletismo (raíz diferente a la de λέγω).' },
-            'φοβου': { type: 'v', e: 'φοβέομαι', d: 'temas', m: 'Verbo. Presente Imperativo Medio-Pasivo 2ª Sing.', formIdx: 1, p: { s: ['-', 'φοβοῦ', '-'], p: ['-', 'φοβεῖσθε', '-'] }, exp: 'Al ir junto al adverbio negativo μή conforma una orden de prohibición directa.' },
+            'φοβου': { type: 'v', e: 'φοβέομαι', d: 'temas', m: 'Verbo contracto en ε. Presente Imperativo Medio-Pasivo 2ª Sing.', formIdx: 1, p: { s: ['-', 'φοβοῦ', '-'], p: ['-', 'φοβεῖσθε', '-'] }, exp: 'Al ir junto al adverbio negativo μή conforma una orden de prohibición directa.' },
             'αποκτεινε': { type: 'v', e: 'ἀποκτείνω', d: 'mata', m: 'Verbo. Presente Imperativo Activo 2ª Sing.', formIdx: 1, p: { s: ['-', 'ἀπόκτεινε', '-'], p: ['-', 'ἀποκτείνετε', '-'] }, exp: 'Mandato directo a Teseo coordinado con ἀλλά (sino que mata...).' },
             'εγενετο': { type: 'v', e: 'γίγνομαι', d: 'se hizo', m: 'Verbo. Aoristo Temático Indicativo Medio 3ª Sing.', formIdx: 2, p: { s: ['ἐγενόμην', 'ἐγένου', 'ἐγένετο'], p: ['ἐγενόμεθα', 'ἐγένεσθε', 'ἐγένοντο'] }, exp: 'Usado frecuentemente en giros temporales impersonales.' },
             'ηγαγον': { type: 'v', e: 'ἄγω', d: 'llevaron', m: 'Verbo. Aoristo Radical Reduplicado Indic. Activo 3ª Plur.', formIdx: 5, p: { s: ['ἤγαγον', 'ἤγαγες', 'ἤγαγε'], p: ['ἠγάγομεν', 'ἠγάγετε', 'ἤγαγον'] }, exp: 'Aoristo muy particular por repetir la consonante inicial de la raíz.' },
             'εκλεισαν': { type: 'v', e: 'κλείω', d: 'cerraron', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔκλεισα', 'ἔκλεισας', 'ἔκλεισε'], p: ['ἐκλείσαμεν', 'ἐκλείσατε', 'ἔκλεισαν'] }, exp: 'Acción drástica y determinante para el encierro.' },
-            'εφοβειτο': { type: 'v', e: 'φοβέομαι', d: 'temía', m: 'Verbo. Imperf. Indicativo Medio-Pasivo 3ª Sing.', formIdx: 2, p: { s: ['ἐφοβούμην', 'ἐφοβοῦ', 'ἐφοβεῖτο'], p: ['ἐφοβούμεθα', 'ἐφοβεῖσθε', 'ἐφοβοῦντο'] }, exp: 'Contraste descriptivo ("pero Teseo no temía").' },
+            'εφοβειτο': { type: 'v', e: 'φοβέομαι', d: 'temía', m: 'Verbo contracto en ε. Imperf. Indicativo Medio-Pasivo 3ª Sing.', formIdx: 2, p: { s: ['ἐφοβούμην', 'ἐφοβοῦ', 'ἐφοβεῖτο'], p: ['ἐφοβούμεθα', 'ἐφοβεῖσθε', 'ἐφοβοῦντο'] }, exp: 'Contraste descriptivo ("pero Teseo no temía").' },
             'εβρυχατο': { type: 'v', e: 'βρυχάομαι', d: 'rugía', m: 'Verbo. Imperf. Indicativo Medio-Pasivo 3ª Sing.', formIdx: 2, p: { s: ['ἐβρυχάμην', 'ἐβρυχῶ', 'ἐβρυχᾶτο'], p: ['ἐβρυχώμεθα', 'ἐβρυχᾶσθε', 'ἐβρυχῶντο'] }, exp: 'Verbo onomatopéyico y deponente para describir la bestialidad.' },
             'ωρμησατο': { type: 'v', e: 'ὁρμάω', d: 'se lanzó', m: 'Verbo. Aoristo Sigmático Indicativo Medio 3ª Sing.', formIdx: 2, p: { s: ['ὡρμησάμην', 'ὡρμήσω', 'ὡρμήσατο'], p: ['ὡρμησάμεθα', 'ὡρμήσασθε', 'ὡρμήσαντο'] }, exp: 'Acción vigorosa y repentina de ataque.' },
             'ελαβετο': { type: 'v', e: 'λαμβάνω', d: 'agarró', m: 'Verbo. Aoristo Temático Indicativo Medio 3ª Sing.', formIdx: 2, p: { s: ['ἐλαβόμην', 'ἐλάβου', 'ἐλάβετο'], p: ['ἐλαβόμεθα', 'ἐλάβεσθε', 'ἐλαβόντο'] }, exp: 'En voz media significa "agarrarse de algo" y requiere complemento en Genitivo (la cabeza).' },
@@ -454,7 +519,7 @@
             'ελυσαν': { type: 'v', e: 'λύω', d: 'soltaron', m: 'Verbo. Aoristo Sigmático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔλυσα', 'ἔλυσας', 'ἔλυσε'], p: ['ἐλύσαμεν', 'ἐλύσατε', 'ἔλυσαν'] }, exp: 'Verbo paradigma modelo del griego por excelencia.' },
             'ελιπον': { type: 'v', e: 'λείπω', d: 'abandonaron', m: 'Verbo. Aoristo Radical Temático Indicativo Activo 3ª Plur.', formIdx: 5, p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }, exp: 'Describe el abandono de los atenienses.' },
             'ελιπε': { type: 'v', e: 'λείπω', d: 'abandonó', m: 'Verbo. Aoristo Radical Temático Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἔλιπον', 'ἔλιπες', 'ἔλιπε'], p: ['ἐλίπομεν', 'ἐλίπετε', 'ἔλιπον'] }, exp: 'Se usa poéticamente: "ella abandonó el sueño", es decir, despertó.' },
-            'εβοα': { type: 'v', e: 'βοάω', d: 'gritaba', m: 'Verbo. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἐβόων', 'ἐβόας', 'ἐβόα'], p: ['ἐβοῶμεν', 'ἐβοᾶτε', 'ἐβόων'] }, exp: 'Verbo contracto que expresa una acción durativa de angustia.' },
+            'εβοα': { type: 'v', e: 'βοάω', d: 'gritaba', m: 'Verbo contracto en α. Imperf. Indicativo Activo 3ª Sing.', formIdx: 2, p: { s: ['ἐβόων', 'ἐβόας', 'ἐβόα'], p: ['ἐβοῶμεν', 'ἐβοᾶτε', 'ἐβόων'] }, exp: 'Verbo contracto que expresa una acción durativa de angustia.' },
             'κατελιπεσ': { type: 'v', e: 'καταλείπω', d: 'abandonaste', m: 'Verbo. Aoristo Radical Temático Indicativo Activo 2ª Sing.', formIdx: 1, p: { s: ['κατέλιπον', 'κατέλιπες', 'κατέλιπε'], p: ['κατελίπομεν', 'κατελίπετε', 'κατέλιπον'] }, exp: 'Cierre dramático con verbo compuesto indicando abandono total.' }
         };
 
@@ -467,6 +532,8 @@
 
         window.onload = () => { 
             lucide.createIcons(); 
+            initDust(); // Iniciar efecto del polvo mítico
+            
             // Soporte tecla Enter
             document.getElementById('teamName').addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') startGame();
@@ -655,6 +722,10 @@
             const snd = document.getElementById('successSound');
             snd.volume = 0.5; snd.play().catch(e => {});
             
+            // Efecto flash divino
+            document.body.classList.add('flash-gold');
+            setTimeout(() => document.body.classList.remove('flash-gold'), 800);
+
             document.getElementById(`papiro${num+1}-container`).classList.remove('hidden-stage');
             document.getElementById(`block${num+1}`).classList.remove('opacity-30', 'pointer-events-none');
             document.getElementById(`block${num}`).classList.add('opacity-40');
